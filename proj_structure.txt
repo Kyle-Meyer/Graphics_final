@@ -1,0 +1,1006 @@
+.
+├── build
+│   ├── CMakeCache.txt
+│   ├── CMakeFiles
+│   │   ├── 3.26.5
+│   │   │   ├── CMakeCCompiler.cmake
+│   │   │   ├── CMakeCXXCompiler.cmake
+│   │   │   ├── CMakeDetermineCompilerABI_C.bin
+│   │   │   ├── CMakeDetermineCompilerABI_CXX.bin
+│   │   │   ├── CMakeSystem.cmake
+│   │   │   ├── CompilerIdC
+│   │   │   │   ├── a.out
+│   │   │   │   ├── CMakeCCompilerId.c
+│   │   │   │   └── tmp
+│   │   │   └── CompilerIdCXX
+│   │   │       ├── a.out
+│   │   │       ├── CMakeCXXCompilerId.cpp
+│   │   │       └── tmp
+│   │   ├── cmake.check_cache
+│   │   ├── CMakeConfigureLog.yaml
+│   │   ├── CMakeDirectoryInformation.cmake
+│   │   ├── CMakeScratch
+│   │   ├── Makefile2
+│   │   ├── Makefile.cmake
+│   │   ├── Module10.dir
+│   │   │   ├── build.make
+│   │   │   ├── cmake_clean.cmake
+│   │   │   ├── compiler_depend.internal
+│   │   │   ├── compiler_depend.make
+│   │   │   ├── compiler_depend.ts
+│   │   │   ├── DependInfo.cmake
+│   │   │   ├── depend.make
+│   │   │   ├── flags.make
+│   │   │   ├── link.txt
+│   │   │   ├── Module10
+│   │   │   │   ├── lighting_shader_node.cpp.o
+│   │   │   │   ├── lighting_shader_node.cpp.o.d
+│   │   │   │   ├── main.cpp.o
+│   │   │   │   └── main.cpp.o.d
+│   │   │   └── progress.make
+│   │   ├── Module9.dir
+│   │   │   ├── build.make
+│   │   │   ├── cmake_clean.cmake
+│   │   │   ├── compiler_depend.internal
+│   │   │   ├── compiler_depend.make
+│   │   │   ├── compiler_depend.ts
+│   │   │   ├── DependInfo.cmake
+│   │   │   ├── depend.make
+│   │   │   ├── flags.make
+│   │   │   ├── link.txt
+│   │   │   ├── Module9
+│   │   │   │   ├── lighting_shader_node.cpp.o
+│   │   │   │   ├── lighting_shader_node.cpp.o.d
+│   │   │   │   ├── main.cpp.o
+│   │   │   │   └── main.cpp.o.d
+│   │   │   └── progress.make
+│   │   ├── pkgRedirects
+│   │   ├── progress.marks
+│   │   └── TargetDirectories.txt
+│   ├── cmake_install.cmake
+│   ├── compile_commands.json
+│   ├── filesystem_support
+│   │   ├── CMakeFiles
+│   │   │   ├── CMakeDirectoryInformation.cmake
+│   │   │   ├── filesystem_support_lib.dir
+│   │   │   │   ├── build.make
+│   │   │   │   ├── cmake_clean.cmake
+│   │   │   │   ├── cmake_clean_target.cmake
+│   │   │   │   ├── compiler_depend.internal
+│   │   │   │   ├── compiler_depend.make
+│   │   │   │   ├── compiler_depend.ts
+│   │   │   │   ├── DependInfo.cmake
+│   │   │   │   ├── depend.make
+│   │   │   │   ├── file_loader.cpp.o
+│   │   │   │   ├── file_loader.cpp.o.d
+│   │   │   │   ├── file_locator.cpp.o
+│   │   │   │   ├── file_locator.cpp.o.d
+│   │   │   │   ├── flags.make
+│   │   │   │   ├── link.txt
+│   │   │   │   └── progress.make
+│   │   │   └── progress.marks
+│   │   ├── cmake_install.cmake
+│   │   ├── libfilesystem_support_lib.a
+│   │   └── Makefile
+│   ├── geometry
+│   │   ├── CMakeFiles
+│   │   │   ├── CMakeDirectoryInformation.cmake
+│   │   │   ├── geometry_lib.dir
+│   │   │   │   ├── aabb.cpp.o
+│   │   │   │   ├── aabb.cpp.o.d
+│   │   │   │   ├── bounding_sphere.cpp.o
+│   │   │   │   ├── bounding_sphere.cpp.o.d
+│   │   │   │   ├── build.make
+│   │   │   │   ├── cmake_clean.cmake
+│   │   │   │   ├── cmake_clean_target.cmake
+│   │   │   │   ├── compiler_depend.internal
+│   │   │   │   ├── compiler_depend.make
+│   │   │   │   ├── compiler_depend.ts
+│   │   │   │   ├── DependInfo.cmake
+│   │   │   │   ├── depend.make
+│   │   │   │   ├── flags.make
+│   │   │   │   ├── geometry.cpp.o
+│   │   │   │   ├── geometry.cpp.o.d
+│   │   │   │   ├── hpoint2.cpp.o
+│   │   │   │   ├── hpoint2.cpp.o.d
+│   │   │   │   ├── hpoint3.cpp.o
+│   │   │   │   ├── hpoint3.cpp.o.d
+│   │   │   │   ├── link.txt
+│   │   │   │   ├── matrix.cpp.o
+│   │   │   │   ├── matrix.cpp.o.d
+│   │   │   │   ├── noise.cpp.o
+│   │   │   │   ├── noise.cpp.o.d
+│   │   │   │   ├── plane.cpp.o
+│   │   │   │   ├── plane.cpp.o.d
+│   │   │   │   ├── point2.cpp.o
+│   │   │   │   ├── point2.cpp.o.d
+│   │   │   │   ├── point3.cpp.o
+│   │   │   │   ├── point3.cpp.o.d
+│   │   │   │   ├── progress.make
+│   │   │   │   ├── ray3.cpp.o
+│   │   │   │   ├── ray3.cpp.o.d
+│   │   │   │   ├── segment2.cpp.o
+│   │   │   │   ├── segment2.cpp.o.d
+│   │   │   │   ├── segment3.cpp.o
+│   │   │   │   ├── segment3.cpp.o.d
+│   │   │   │   ├── types.cpp.o
+│   │   │   │   ├── types.cpp.o.d
+│   │   │   │   ├── vector2.cpp.o
+│   │   │   │   ├── vector2.cpp.o.d
+│   │   │   │   ├── vector3.cpp.o
+│   │   │   │   └── vector3.cpp.o.d
+│   │   │   └── progress.marks
+│   │   ├── cmake_install.cmake
+│   │   ├── libgeometry_lib.a
+│   │   └── Makefile
+│   ├── Makefile
+│   ├── Module10
+│   │   └── Module10
+│   ├── Module9
+│   │   └── Module9
+│   ├── scene
+│   │   ├── CMakeFiles
+│   │   │   ├── CMakeDirectoryInformation.cmake
+│   │   │   ├── progress.marks
+│   │   │   └── scene_lib.dir
+│   │   │       ├── build.make
+│   │   │       ├── camera_node.cpp.o
+│   │   │       ├── camera_node.cpp.o.d
+│   │   │       ├── cmake_clean.cmake
+│   │   │       ├── cmake_clean_target.cmake
+│   │   │       ├── color3.cpp.o
+│   │   │       ├── color3.cpp.o.d
+│   │   │       ├── color4.cpp.o
+│   │   │       ├── color4.cpp.o.d
+│   │   │       ├── color_node.cpp.o
+│   │   │       ├── color_node.cpp.o.d
+│   │   │       ├── compiler_depend.internal
+│   │   │       ├── compiler_depend.make
+│   │   │       ├── compiler_depend.ts
+│   │   │       ├── conic.cpp.o
+│   │   │       ├── conic.cpp.o.d
+│   │   │       ├── DependInfo.cmake
+│   │   │       ├── depend.make
+│   │   │       ├── flags.make
+│   │   │       ├── geometry_node.cpp.o
+│   │   │       ├── geometry_node.cpp.o.d
+│   │   │       ├── image_data.cpp.o
+│   │   │       ├── image_data.cpp.o.d
+│   │   │       ├── light_node.cpp.o
+│   │   │       ├── light_node.cpp.o.d
+│   │   │       ├── link.txt
+│   │   │       ├── mesh_teapot.cpp.o
+│   │   │       ├── mesh_teapot.cpp.o.d
+│   │   │       ├── presentation_node.cpp.o
+│   │   │       ├── presentation_node.cpp.o.d
+│   │   │       ├── progress.make
+│   │   │       ├── scene.cpp.o
+│   │   │       ├── scene.cpp.o.d
+│   │   │       ├── scene_node.cpp.o
+│   │   │       ├── scene_node.cpp.o.d
+│   │   │       ├── scene_state.cpp.o
+│   │   │       ├── scene_state.cpp.o.d
+│   │   │       ├── shader_node.cpp.o
+│   │   │       ├── shader_node.cpp.o.d
+│   │   │       ├── sphere_section.cpp.o
+│   │   │       ├── sphere_section.cpp.o.d
+│   │   │       ├── surface_of_revolution.cpp.o
+│   │   │       ├── surface_of_revolution.cpp.o.d
+│   │   │       ├── torus.cpp.o
+│   │   │       ├── torus.cpp.o.d
+│   │   │       ├── transform_node.cpp.o
+│   │   │       ├── transform_node.cpp.o.d
+│   │   │       ├── tri_surface.cpp.o
+│   │   │       ├── tri_surface.cpp.o.d
+│   │   │       ├── unit_square.cpp.o
+│   │   │       └── unit_square.cpp.o.d
+│   │   ├── cmake_install.cmake
+│   │   ├── libscene_lib.a
+│   │   └── Makefile
+│   └── shader_support
+│       ├── CMakeFiles
+│       │   ├── CMakeDirectoryInformation.cmake
+│       │   ├── progress.marks
+│       │   └── shader_support_lib.dir
+│       │       ├── build.make
+│       │       ├── cmake_clean.cmake
+│       │       ├── cmake_clean_target.cmake
+│       │       ├── compiler_depend.internal
+│       │       ├── compiler_depend.make
+│       │       ├── compiler_depend.ts
+│       │       ├── DependInfo.cmake
+│       │       ├── depend.make
+│       │       ├── flags.make
+│       │       ├── glsl_shader.cpp.o
+│       │       ├── glsl_shader.cpp.o.d
+│       │       ├── glsl_shader_program.cpp.o
+│       │       ├── glsl_shader_program.cpp.o.d
+│       │       ├── link.txt
+│       │       └── progress.make
+│       ├── cmake_install.cmake
+│       ├── libshader_support_lib.a
+│       └── Makefile
+├── build_win
+│   ├── filesystem_support
+│   │   ├── filesystem_support_lib.sln
+│   │   ├── filesystem_support_lib.vcxproj
+│   │   └── filesystem_support_lib.vcxproj.filters
+│   ├── geometry
+│   │   ├── geometry_lib.sln
+│   │   ├── geometry_lib.vcxproj
+│   │   └── geometry_lib.vcxproj.filters
+│   ├── JHU_CS_605.667.sln
+│   ├── Module10.vcxproj
+│   ├── Module10.vcxproj.filters
+│   ├── Module9.vcxproj
+│   ├── Module9.vcxproj.filters
+│   ├── scene
+│   │   ├── scene_lib.sln
+│   │   ├── scene_lib.vcxproj
+│   │   └── scene_lib.vcxproj.filters
+│   └── shader_support
+│       ├── shader_support_lib.sln
+│       ├── shader_support_lib.vcxproj
+│       └── shader_support_lib.vcxproj.filters
+├── build_xcode
+│   └── JHU_605.667.xcodeproj
+│       └── project.pbxproj
+├── CMakeLists.txt
+├── compile_commands.json
+├── filesystem_support
+│   ├── CMakeLists.txt
+│   ├── file_loader.cpp
+│   ├── file_loader.hpp
+│   ├── file_locator.cpp
+│   ├── file_locator.hpp
+│   └── preprocessor.hpp
+├── final
+│   ├── main.cpp
+│   ├── multi_texture.frag
+│   ├── multi_texture_shader_node.cpp
+│   ├── multi_texture_shader_node.hpp
+│   └── multi_texture.vert
+├── geometry
+│   ├── aabb.cpp
+│   ├── aabb.hpp
+│   ├── bounding_sphere.cpp
+│   ├── bounding_sphere.hpp
+│   ├── CMakeLists.txt
+│   ├── geometry.cpp
+│   ├── geometry.hpp
+│   ├── hpoint2.cpp
+│   ├── hpoint2.hpp
+│   ├── hpoint3.cpp
+│   ├── hpoint3.hpp
+│   ├── matrix.cpp
+│   ├── matrix.hpp
+│   ├── noise.cpp
+│   ├── noise.hpp
+│   ├── plane.cpp
+│   ├── plane.hpp
+│   ├── point2.cpp
+│   ├── point2.hpp
+│   ├── point3.cpp
+│   ├── point3.hpp
+│   ├── ray3.cpp
+│   ├── ray3.hpp
+│   ├── segment2.cpp
+│   ├── segment2.hpp
+│   ├── segment3.cpp
+│   ├── segment3.hpp
+│   ├── types.cpp
+│   ├── types.hpp
+│   ├── vector2.cpp
+│   ├── vector2.hpp
+│   ├── vector3.cpp
+│   └── vector3.hpp
+├── include
+│   ├── SDL3
+│   │   ├── SDL_assert.h
+│   │   ├── SDL_asyncio.h
+│   │   ├── SDL_atomic.h
+│   │   ├── SDL_audio.h
+│   │   ├── SDL_begin_code.h
+│   │   ├── SDL_bits.h
+│   │   ├── SDL_blendmode.h
+│   │   ├── SDL_camera.h
+│   │   ├── SDL_clipboard.h
+│   │   ├── SDL_close_code.h
+│   │   ├── SDL_copying.h
+│   │   ├── SDL_cpuinfo.h
+│   │   ├── SDL_dialog.h
+│   │   ├── SDL_egl.h
+│   │   ├── SDL_endian.h
+│   │   ├── SDL_error.h
+│   │   ├── SDL_events.h
+│   │   ├── SDL_filesystem.h
+│   │   ├── SDL_gamepad.h
+│   │   ├── SDL_gpu.h
+│   │   ├── SDL_guid.h
+│   │   ├── SDL.h
+│   │   ├── SDL_haptic.h
+│   │   ├── SDL_hidapi.h
+│   │   ├── SDL_hints.h
+│   │   ├── SDL_init.h
+│   │   ├── SDL_intrin.h
+│   │   ├── SDL_iostream.h
+│   │   ├── SDL_joystick.h
+│   │   ├── SDL_keyboard.h
+│   │   ├── SDL_keycode.h
+│   │   ├── SDL_loadso.h
+│   │   ├── SDL_locale.h
+│   │   ├── SDL_log.h
+│   │   ├── SDL_main.h
+│   │   ├── SDL_main_impl.h
+│   │   ├── SDL_messagebox.h
+│   │   ├── SDL_metal.h
+│   │   ├── SDL_misc.h
+│   │   ├── SDL_mouse.h
+│   │   ├── SDL_mutex.h
+│   │   ├── SDL_oldnames.h
+│   │   ├── SDL_opengles2_gl2ext.h
+│   │   ├── SDL_opengles2_gl2.h
+│   │   ├── SDL_opengles2_gl2platform.h
+│   │   ├── SDL_opengles2.h
+│   │   ├── SDL_opengles2_khrplatform.h
+│   │   ├── SDL_opengles.h
+│   │   ├── SDL_opengl_glext.h
+│   │   ├── SDL_opengl.h
+│   │   ├── SDL_pen.h
+│   │   ├── SDL_pixels.h
+│   │   ├── SDL_platform_defines.h
+│   │   ├── SDL_platform.h
+│   │   ├── SDL_power.h
+│   │   ├── SDL_process.h
+│   │   ├── SDL_properties.h
+│   │   ├── SDL_rect.h
+│   │   ├── SDL_render.h
+│   │   ├── SDL_revision.h
+│   │   ├── SDL_scancode.h
+│   │   ├── SDL_sensor.h
+│   │   ├── SDL_stdinc.h
+│   │   ├── SDL_storage.h
+│   │   ├── SDL_surface.h
+│   │   ├── SDL_system.h
+│   │   ├── SDL_thread.h
+│   │   ├── SDL_time.h
+│   │   ├── SDL_timer.h
+│   │   ├── SDL_touch.h
+│   │   ├── SDL_tray.h
+│   │   ├── SDL_version.h
+│   │   ├── SDL_video.h
+│   │   └── SDL_vulkan.h
+│   └── stb
+│       ├── data
+│       │   ├── atari_8bit_font_revised.png
+│       │   ├── easy_font_raw.png
+│       │   ├── herringbone
+│       │   │   ├── license.txt
+│       │   │   ├── template_caves_limit_connectivity.png
+│       │   │   ├── template_caves_tiny_corridors.png
+│       │   │   ├── template_corner_caves.png
+│       │   │   ├── template_horizontal_corridors_v1.png
+│       │   │   ├── template_horizontal_corridors_v2.png
+│       │   │   ├── template_horizontal_corridors_v3.png
+│       │   │   ├── template_limit_connectivity_fat.png
+│       │   │   ├── template_limited_connectivity.png
+│       │   │   ├── template_maze_2_wide.png
+│       │   │   ├── template_maze_plus_2_wide.png
+│       │   │   ├── template_open_areas.png
+│       │   │   ├── template_ref2_corner_caves.png
+│       │   │   ├── template_rooms_and_corridors_2_wide_diagonal_bias.png
+│       │   │   ├── template_rooms_and_corridors.png
+│       │   │   ├── template_rooms_limit_connectivity.png
+│       │   │   ├── template_round_rooms_diagonal_corridors.png
+│       │   │   ├── template_sean_dungeon.png
+│       │   │   ├── template_simple_caves_2_wide.png
+│       │   │   └── template_square_rooms_with_random_rects.png
+│       │   ├── map_01.png
+│       │   ├── map_02.png
+│       │   └── map_03.png
+│       ├── deprecated
+│       │   ├── rrsprintf.h
+│       │   ├── stb.h
+│       │   ├── stb_image.c
+│       │   ├── stretch_test.c
+│       │   ├── stretchy_buffer.h
+│       │   └── stretchy_buffer.txt
+│       ├── docs
+│       │   ├── other_libs.md
+│       │   ├── stb_howto.txt
+│       │   ├── stb_voxel_render_interview.md
+│       │   └── why_public_domain.md
+│       ├── LICENSE
+│       ├── README.md
+│       ├── stb_c_lexer.h
+│       ├── stb_connected_components.h
+│       ├── stb_divide.h
+│       ├── stb_ds.h
+│       ├── stb_dxt.h
+│       ├── stb_easy_font.h
+│       ├── stb_herringbone_wang_tile.h
+│       ├── stb_hexwave.h
+│       ├── stb_image.h
+│       ├── stb_image_resize.h
+│       ├── stb_image_write.h
+│       ├── stb_include.h
+│       ├── stb_leakcheck.h
+│       ├── stb_perlin.h
+│       ├── stb_rect_pack.h
+│       ├── stb_sprintf.h
+│       ├── stb_textedit.h
+│       ├── stb_tilemap_editor.h
+│       ├── stb_truetype.h
+│       ├── stb_vorbis.c
+│       ├── stb_voxel_render.h
+│       ├── tests
+│       │   ├── caveview
+│       │   │   ├── cave_main.c
+│       │   │   ├── cave_mesher.c
+│       │   │   ├── cave_parse.c
+│       │   │   ├── cave_parse.h
+│       │   │   ├── cave_render.c
+│       │   │   ├── caveview.dsp
+│       │   │   ├── caveview.dsw
+│       │   │   ├── caveview.h
+│       │   │   ├── glext.h
+│       │   │   ├── glext_list.h
+│       │   │   ├── main.c
+│       │   │   ├── README.md
+│       │   │   ├── stb_gl.h
+│       │   │   ├── stb_glprog.h
+│       │   │   └── win32
+│       │   │       └── SDL_windows_main.c
+│       │   ├── c_lexer_test.c
+│       │   ├── c_lexer_test.dsp
+│       │   ├── fuzz_main.c
+│       │   ├── grid_reachability.c
+│       │   ├── herringbone.dsp
+│       │   ├── herringbone_generator.c
+│       │   ├── herringbone_map.c
+│       │   ├── herringbone_map.dsp
+│       │   ├── image_test.c
+│       │   ├── image_test.dsp
+│       │   ├── image_write_test.c
+│       │   ├── Makefile
+│       │   ├── ossfuzz.sh
+│       │   ├── oversample
+│       │   │   ├── main.c
+│       │   │   ├── oversample.dsp
+│       │   │   ├── oversample.dsw
+│       │   │   ├── README.md
+│       │   │   └── stb_wingraph.h
+│       │   ├── pbm
+│       │   │   ├── basi0g16.pgm
+│       │   │   ├── basi2c16.ppm
+│       │   │   ├── cdfn2c08.ppm
+│       │   │   ├── cdun2c08.ppm
+│       │   │   ├── comment.pgm
+│       │   │   └── ctfn0g04.pgm
+│       │   ├── pg_test
+│       │   │   └── pg_test.c
+│       │   ├── pngsuite
+│       │   │   ├── 16bit
+│       │   │   │   ├── basi0g16.png
+│       │   │   │   ├── basi2c16.png
+│       │   │   │   ├── basi4a16.png
+│       │   │   │   ├── basi6a16.png
+│       │   │   │   ├── basn0g16.png
+│       │   │   │   ├── basn2c16.png
+│       │   │   │   ├── basn4a16.png
+│       │   │   │   ├── basn6a16.png
+│       │   │   │   ├── bgai4a16.png
+│       │   │   │   ├── bgan6a16.png
+│       │   │   │   ├── bggn4a16.png
+│       │   │   │   ├── bgyn6a16.png
+│       │   │   │   ├── oi1n0g16.png
+│       │   │   │   ├── oi1n2c16.png
+│       │   │   │   ├── oi2n0g16.png
+│       │   │   │   ├── oi2n2c16.png
+│       │   │   │   ├── oi4n0g16.png
+│       │   │   │   ├── oi4n2c16.png
+│       │   │   │   ├── oi9n0g16.png
+│       │   │   │   ├── oi9n2c16.png
+│       │   │   │   ├── tbbn2c16.png
+│       │   │   │   ├── tbgn2c16.png
+│       │   │   │   └── tbwn0g16.png
+│       │   │   ├── corrupt
+│       │   │   │   ├── xc1n0g08.png
+│       │   │   │   ├── xc9n2c08.png
+│       │   │   │   ├── xcrn0g04.png
+│       │   │   │   ├── xcsn0g01.png
+│       │   │   │   ├── xd0n2c08.png
+│       │   │   │   ├── xd3n2c08.png
+│       │   │   │   ├── xd9n2c08.png
+│       │   │   │   ├── xdtn0g01.png
+│       │   │   │   ├── xhdn0g08.png
+│       │   │   │   ├── xlfn0g04.png
+│       │   │   │   ├── xs1n0g01.png
+│       │   │   │   ├── xs2n0g01.png
+│       │   │   │   ├── xs4n0g01.png
+│       │   │   │   └── xs7n0g01.png
+│       │   │   ├── iphone
+│       │   │   │   ├── iphone_basi0g01.png
+│       │   │   │   ├── iphone_basi0g02.png
+│       │   │   │   ├── iphone_basi3p02.png
+│       │   │   │   ├── iphone_bgwn6a08.png
+│       │   │   │   ├── iphone_bgyn6a16.png
+│       │   │   │   ├── iphone_tbyn3p08.png
+│       │   │   │   └── iphone_z06n2c08.png
+│       │   │   ├── PngSuite.LICENSE
+│       │   │   ├── primary
+│       │   │   │   ├── basi0g01.png
+│       │   │   │   ├── basi0g02.png
+│       │   │   │   ├── basi0g04.png
+│       │   │   │   ├── basi0g08.png
+│       │   │   │   ├── basi2c08.png
+│       │   │   │   ├── basi3p01.png
+│       │   │   │   ├── basi3p02.png
+│       │   │   │   ├── basi3p04.png
+│       │   │   │   ├── basi3p08.png
+│       │   │   │   ├── basi4a08.png
+│       │   │   │   ├── basi6a08.png
+│       │   │   │   ├── basn0g01.png
+│       │   │   │   ├── basn0g02.png
+│       │   │   │   ├── basn0g04.png
+│       │   │   │   ├── basn0g08.png
+│       │   │   │   ├── basn2c08.png
+│       │   │   │   ├── basn3p01.png
+│       │   │   │   ├── basn3p02.png
+│       │   │   │   ├── basn3p04.png
+│       │   │   │   ├── basn3p08.png
+│       │   │   │   ├── basn4a08.png
+│       │   │   │   ├── basn6a08.png
+│       │   │   │   ├── bgai4a08.png
+│       │   │   │   ├── bgan6a08.png
+│       │   │   │   ├── bgbn4a08.png
+│       │   │   │   ├── bgwn6a08.png
+│       │   │   │   ├── s01i3p01.png
+│       │   │   │   ├── s01n3p01.png
+│       │   │   │   ├── s02i3p01.png
+│       │   │   │   ├── s02n3p01.png
+│       │   │   │   ├── s03i3p01.png
+│       │   │   │   ├── s03n3p01.png
+│       │   │   │   ├── s04i3p01.png
+│       │   │   │   ├── s04n3p01.png
+│       │   │   │   ├── s05i3p02.png
+│       │   │   │   ├── s05n3p02.png
+│       │   │   │   ├── s06i3p02.png
+│       │   │   │   ├── s06n3p02.png
+│       │   │   │   ├── s07i3p02.png
+│       │   │   │   ├── s07n3p02.png
+│       │   │   │   ├── s08i3p02.png
+│       │   │   │   ├── s08n3p02.png
+│       │   │   │   ├── s09i3p02.png
+│       │   │   │   ├── s09n3p02.png
+│       │   │   │   ├── s32i3p04.png
+│       │   │   │   ├── s32n3p04.png
+│       │   │   │   ├── s33i3p04.png
+│       │   │   │   ├── s33n3p04.png
+│       │   │   │   ├── s34i3p04.png
+│       │   │   │   ├── s34n3p04.png
+│       │   │   │   ├── s35i3p04.png
+│       │   │   │   ├── s35n3p04.png
+│       │   │   │   ├── s36i3p04.png
+│       │   │   │   ├── s36n3p04.png
+│       │   │   │   ├── s37i3p04.png
+│       │   │   │   ├── s37n3p04.png
+│       │   │   │   ├── s38i3p04.png
+│       │   │   │   ├── s38n3p04.png
+│       │   │   │   ├── s39i3p04.png
+│       │   │   │   ├── s39n3p04.png
+│       │   │   │   ├── s40i3p04.png
+│       │   │   │   ├── s40n3p04.png
+│       │   │   │   ├── tbbn0g04.png
+│       │   │   │   ├── tbbn3p08.png
+│       │   │   │   ├── tbgn3p08.png
+│       │   │   │   ├── tbrn2c08.png
+│       │   │   │   ├── tbwn3p08.png
+│       │   │   │   ├── tbyn3p08.png
+│       │   │   │   ├── tm3n3p02.png
+│       │   │   │   ├── tp0n0g08.png
+│       │   │   │   ├── tp0n2c08.png
+│       │   │   │   ├── tp0n3p08.png
+│       │   │   │   ├── tp1n3p08.png
+│       │   │   │   ├── z00n2c08.png
+│       │   │   │   ├── z03n2c08.png
+│       │   │   │   ├── z06n2c08.png
+│       │   │   │   └── z09n2c08.png
+│       │   │   ├── primary_check
+│       │   │   │   ├── basi0g01.png
+│       │   │   │   ├── basi0g02.png
+│       │   │   │   ├── basi0g04.png
+│       │   │   │   ├── basi0g08.png
+│       │   │   │   ├── basi2c08.png
+│       │   │   │   ├── basi3p01.png
+│       │   │   │   ├── basi3p02.png
+│       │   │   │   ├── basi3p04.png
+│       │   │   │   ├── basi3p08.png
+│       │   │   │   ├── basi4a08.png
+│       │   │   │   ├── basi6a08.png
+│       │   │   │   ├── basn0g01.png
+│       │   │   │   ├── basn0g02.png
+│       │   │   │   ├── basn0g04.png
+│       │   │   │   ├── basn0g08.png
+│       │   │   │   ├── basn2c08.png
+│       │   │   │   ├── basn3p01.png
+│       │   │   │   ├── basn3p02.png
+│       │   │   │   ├── basn3p04.png
+│       │   │   │   ├── basn3p08.png
+│       │   │   │   ├── basn4a08.png
+│       │   │   │   ├── basn6a08.png
+│       │   │   │   ├── bgai4a08.png
+│       │   │   │   ├── bgan6a08.png
+│       │   │   │   ├── bgbn4a08.png
+│       │   │   │   ├── bgwn6a08.png
+│       │   │   │   ├── s01i3p01.png
+│       │   │   │   ├── s01n3p01.png
+│       │   │   │   ├── s02i3p01.png
+│       │   │   │   ├── s02n3p01.png
+│       │   │   │   ├── s03i3p01.png
+│       │   │   │   ├── s03n3p01.png
+│       │   │   │   ├── s04i3p01.png
+│       │   │   │   ├── s04n3p01.png
+│       │   │   │   ├── s05i3p02.png
+│       │   │   │   ├── s05n3p02.png
+│       │   │   │   ├── s06i3p02.png
+│       │   │   │   ├── s06n3p02.png
+│       │   │   │   ├── s07i3p02.png
+│       │   │   │   ├── s07n3p02.png
+│       │   │   │   ├── s08i3p02.png
+│       │   │   │   ├── s08n3p02.png
+│       │   │   │   ├── s09i3p02.png
+│       │   │   │   ├── s09n3p02.png
+│       │   │   │   ├── s32i3p04.png
+│       │   │   │   ├── s32n3p04.png
+│       │   │   │   ├── s33i3p04.png
+│       │   │   │   ├── s33n3p04.png
+│       │   │   │   ├── s34i3p04.png
+│       │   │   │   ├── s34n3p04.png
+│       │   │   │   ├── s35i3p04.png
+│       │   │   │   ├── s35n3p04.png
+│       │   │   │   ├── s36i3p04.png
+│       │   │   │   ├── s36n3p04.png
+│       │   │   │   ├── s37i3p04.png
+│       │   │   │   ├── s37n3p04.png
+│       │   │   │   ├── s38i3p04.png
+│       │   │   │   ├── s38n3p04.png
+│       │   │   │   ├── s39i3p04.png
+│       │   │   │   ├── s39n3p04.png
+│       │   │   │   ├── s40i3p04.png
+│       │   │   │   ├── s40n3p04.png
+│       │   │   │   ├── tbbn0g04.png
+│       │   │   │   ├── tbbn3p08.png
+│       │   │   │   ├── tbgn3p08.png
+│       │   │   │   ├── tbrn2c08.png
+│       │   │   │   ├── tbwn3p08.png
+│       │   │   │   ├── tbyn3p08.png
+│       │   │   │   ├── tm3n3p02.png
+│       │   │   │   ├── tp0n0g08.png
+│       │   │   │   ├── tp0n2c08.png
+│       │   │   │   ├── tp0n3p08.png
+│       │   │   │   ├── tp1n3p08.png
+│       │   │   │   ├── z00n2c08.png
+│       │   │   │   ├── z03n2c08.png
+│       │   │   │   ├── z06n2c08.png
+│       │   │   │   └── z09n2c08.png
+│       │   │   └── unused
+│       │   │       ├── ccwn2c08.png
+│       │   │       ├── ccwn3p08.png
+│       │   │       ├── cdfn2c08.png
+│       │   │       ├── cdhn2c08.png
+│       │   │       ├── cdsn2c08.png
+│       │   │       ├── cdun2c08.png
+│       │   │       ├── ch1n3p04.png
+│       │   │       ├── ch2n3p08.png
+│       │   │       ├── cm0n0g04.png
+│       │   │       ├── cm7n0g04.png
+│       │   │       ├── cm9n0g04.png
+│       │   │       ├── cs3n2c16.png
+│       │   │       ├── cs3n3p08.png
+│       │   │       ├── cs5n2c08.png
+│       │   │       ├── cs5n3p08.png
+│       │   │       ├── cs8n2c08.png
+│       │   │       ├── cs8n3p08.png
+│       │   │       ├── ct0n0g04.png
+│       │   │       ├── ct1n0g04.png
+│       │   │       ├── cten0g04.png
+│       │   │       ├── ctfn0g04.png
+│       │   │       ├── ctgn0g04.png
+│       │   │       ├── cthn0g04.png
+│       │   │       ├── ctjn0g04.png
+│       │   │       ├── ctzn0g04.png
+│       │   │       ├── f00n0g08.png
+│       │   │       ├── f00n2c08.png
+│       │   │       ├── f01n0g08.png
+│       │   │       ├── f01n2c08.png
+│       │   │       ├── f02n0g08.png
+│       │   │       ├── f02n2c08.png
+│       │   │       ├── f03n0g08.png
+│       │   │       ├── f03n2c08.png
+│       │   │       ├── f04n0g08.png
+│       │   │       ├── f04n2c08.png
+│       │   │       ├── f99n0g04.png
+│       │   │       ├── g03n0g16.png
+│       │   │       ├── g03n2c08.png
+│       │   │       ├── g03n3p04.png
+│       │   │       ├── g04n0g16.png
+│       │   │       ├── g04n2c08.png
+│       │   │       ├── g04n3p04.png
+│       │   │       ├── g05n0g16.png
+│       │   │       ├── g05n2c08.png
+│       │   │       ├── g05n3p04.png
+│       │   │       ├── g07n0g16.png
+│       │   │       ├── g07n2c08.png
+│       │   │       ├── g07n3p04.png
+│       │   │       ├── g10n0g16.png
+│       │   │       ├── g10n2c08.png
+│       │   │       ├── g10n3p04.png
+│       │   │       ├── g25n0g16.png
+│       │   │       ├── g25n2c08.png
+│       │   │       ├── g25n3p04.png
+│       │   │       ├── pp0n2c16.png
+│       │   │       ├── pp0n6a08.png
+│       │   │       ├── ps1n0g08.png
+│       │   │       ├── ps1n2c16.png
+│       │   │       ├── ps2n0g08.png
+│       │   │       └── ps2n2c16.png
+│       │   ├── prerelease
+│       │   │   └── stb_lib.h
+│       │   ├── resample_test_c.c
+│       │   ├── resample_test.cpp
+│       │   ├── resize.dsp
+│       │   ├── sdf
+│       │   │   ├── sdf_test_arial_16.png
+│       │   │   ├── sdf_test.c
+│       │   │   ├── sdf_test_times_16.png
+│       │   │   └── sdf_test_times_50.png
+│       │   ├── stb.c
+│       │   ├── stb_c_lexer_fuzzer.cpp
+│       │   ├── stb_cpp.cpp
+│       │   ├── stb_cpp.dsp
+│       │   ├── stb.dsp
+│       │   ├── stb.dsw
+│       │   ├── stbi_read_fuzzer.c
+│       │   ├── stblib.dsp
+│       │   ├── stblib_test.c
+│       │   ├── stblib_test_companion.c
+│       │   ├── stb_png.dict
+│       │   ├── stb_static.c
+│       │   ├── stretch_test.dsp
+│       │   ├── test_c_compilation.c
+│       │   ├── test_c_lexer.c
+│       │   ├── test_cpp_compilation.cpp
+│       │   ├── test_ds.c
+│       │   ├── test_ds_cpp.cpp
+│       │   ├── test_dxt.c
+│       │   ├── test_easyfont.c
+│       │   ├── test_image.c
+│       │   ├── test_image_write.c
+│       │   ├── test_perlin.c
+│       │   ├── test.sbm
+│       │   ├── test_siphash.c
+│       │   ├── test_sprintf.c
+│       │   ├── test_truetype.c
+│       │   ├── test_vorbis.c
+│       │   ├── test_voxel.c
+│       │   ├── textedit_sample.c
+│       │   ├── tilemap_editor_integration_example.c
+│       │   ├── truetype_test_win32.c
+│       │   └── vorbseek
+│       │       ├── vorbseek.c
+│       │       └── vorbseek.dsp
+│       └── tools
+│           ├── build_matrix.c
+│           ├── easy_font_maker.c
+│           ├── make_readme.c
+│           ├── make_readme.dsp
+│           ├── mr.bat
+│           ├── README.footer.md
+│           ├── README.header.md
+│           ├── README.list
+│           ├── trailing_whitespace.c
+│           ├── unicode
+│           │   └── unicode.dsp
+│           └── unicode.c
+├── jhu_605.667.code-workspace
+├── lib
+│   ├── linux
+│   │   └── SDL3
+│   │       ├── libSDL3.so -> libSDL3.so.0
+│   │       ├── libSDL3.so.0 -> libSDL3.so.0.1.7
+│   │       └── libSDL3.so.0.1.7
+│   ├── macos
+│   │   └── SDL3.framework
+│   │       ├── Headers -> Versions/Current/Headers
+│   │       ├── Resources -> Versions/Current/Resources
+│   │       ├── SDL3 -> Versions/Current/SDL3
+│   │       └── Versions
+│   │           ├── A
+│   │           │   ├── _CodeSignature
+│   │           │   │   └── CodeResources
+│   │           │   ├── Headers
+│   │           │   │   ├── SDL_assert.h
+│   │           │   │   ├── SDL_asyncio.h
+│   │           │   │   ├── SDL_atomic.h
+│   │           │   │   ├── SDL_audio.h
+│   │           │   │   ├── SDL_begin_code.h
+│   │           │   │   ├── SDL_bits.h
+│   │           │   │   ├── SDL_blendmode.h
+│   │           │   │   ├── SDL_camera.h
+│   │           │   │   ├── SDL_clipboard.h
+│   │           │   │   ├── SDL_close_code.h
+│   │           │   │   ├── SDL_copying.h
+│   │           │   │   ├── SDL_cpuinfo.h
+│   │           │   │   ├── SDL_dialog.h
+│   │           │   │   ├── SDL_egl.h
+│   │           │   │   ├── SDL_endian.h
+│   │           │   │   ├── SDL_error.h
+│   │           │   │   ├── SDL_events.h
+│   │           │   │   ├── SDL_filesystem.h
+│   │           │   │   ├── SDL_gamepad.h
+│   │           │   │   ├── SDL_gpu.h
+│   │           │   │   ├── SDL_guid.h
+│   │           │   │   ├── SDL.h
+│   │           │   │   ├── SDL_haptic.h
+│   │           │   │   ├── SDL_hidapi.h
+│   │           │   │   ├── SDL_hints.h
+│   │           │   │   ├── SDL_init.h
+│   │           │   │   ├── SDL_intrin.h
+│   │           │   │   ├── SDL_iostream.h
+│   │           │   │   ├── SDL_joystick.h
+│   │           │   │   ├── SDL_keyboard.h
+│   │           │   │   ├── SDL_keycode.h
+│   │           │   │   ├── SDL_loadso.h
+│   │           │   │   ├── SDL_locale.h
+│   │           │   │   ├── SDL_log.h
+│   │           │   │   ├── SDL_main.h
+│   │           │   │   ├── SDL_main_impl.h
+│   │           │   │   ├── SDL_messagebox.h
+│   │           │   │   ├── SDL_metal.h
+│   │           │   │   ├── SDL_misc.h
+│   │           │   │   ├── SDL_mouse.h
+│   │           │   │   ├── SDL_mutex.h
+│   │           │   │   ├── SDL_oldnames.h
+│   │           │   │   ├── SDL_opengles2_gl2ext.h
+│   │           │   │   ├── SDL_opengles2_gl2.h
+│   │           │   │   ├── SDL_opengles2_gl2platform.h
+│   │           │   │   ├── SDL_opengles2.h
+│   │           │   │   ├── SDL_opengles2_khrplatform.h
+│   │           │   │   ├── SDL_opengles.h
+│   │           │   │   ├── SDL_opengl_glext.h
+│   │           │   │   ├── SDL_opengl.h
+│   │           │   │   ├── SDL_pen.h
+│   │           │   │   ├── SDL_pixels.h
+│   │           │   │   ├── SDL_platform_defines.h
+│   │           │   │   ├── SDL_platform.h
+│   │           │   │   ├── SDL_power.h
+│   │           │   │   ├── SDL_process.h
+│   │           │   │   ├── SDL_properties.h
+│   │           │   │   ├── SDL_rect.h
+│   │           │   │   ├── SDL_render.h
+│   │           │   │   ├── SDL_revision.h
+│   │           │   │   ├── SDL_scancode.h
+│   │           │   │   ├── SDL_sensor.h
+│   │           │   │   ├── SDL_stdinc.h
+│   │           │   │   ├── SDL_storage.h
+│   │           │   │   ├── SDL_surface.h
+│   │           │   │   ├── SDL_system.h
+│   │           │   │   ├── SDL_thread.h
+│   │           │   │   ├── SDL_time.h
+│   │           │   │   ├── SDL_timer.h
+│   │           │   │   ├── SDL_touch.h
+│   │           │   │   ├── SDL_tray.h
+│   │           │   │   ├── SDL_version.h
+│   │           │   │   ├── SDL_video.h
+│   │           │   │   └── SDL_vulkan.h
+│   │           │   ├── Resources
+│   │           │   │   ├── CMake
+│   │           │   │   │   ├── SDL3Config.cmake
+│   │           │   │   │   └── SDL3ConfigVersion.cmake
+│   │           │   │   ├── default.metallib
+│   │           │   │   └── Info.plist
+│   │           │   └── SDL3
+│   │           └── Current -> A
+│   └── win
+│       ├── glew
+│       │   ├── bin
+│       │   │   ├── x64
+│       │   │   │   └── glew32.dll
+│       │   │   └── x86
+│       │   │       └── glew32.dll
+│       │   ├── include
+│       │   │   └── GL
+│       │   │       ├── eglew.h
+│       │   │       ├── glew.h
+│       │   │       ├── glxew.h
+│       │   │       └── wglew.h
+│       │   └── lib
+│       │       ├── x64
+│       │       │   ├── glew32.lib
+│       │       │   └── glew32s.lib
+│       │       └── x86
+│       │           ├── glew32.lib
+│       │           └── glew32s.lib
+│       └── SDL3
+│           ├── arm64
+│           │   ├── SDL3.dll
+│           │   └── SDL3.lib
+│           ├── x64
+│           │   ├── SDL3.dll
+│           │   └── SDL3.lib
+│           └── x86
+│               ├── SDL3.dll
+│               └── SDL3.lib
+├── Module10
+│   ├── lighting_shader_node.cpp
+│   ├── lighting_shader_node.hpp
+│   ├── main.cpp
+│   ├── pixel_lighting.frag
+│   └── pixel_lighting.vert
+├── Module9
+│   ├── lighting_shader_node.cpp
+│   ├── lighting_shader_node.hpp
+│   ├── main.cpp
+│   ├── pixel_lighting.frag
+│   ├── pixel_lighting.vert
+│   └── shader_src.hpp
+├── proj_structure.txt
+├── scene
+│   ├── camera_node.cpp
+│   ├── camera_node.hpp
+│   ├── CMakeLists.txt
+│   ├── color3.cpp
+│   ├── color3.hpp
+│   ├── color4.cpp
+│   ├── color4.hpp
+│   ├── color_node.cpp
+│   ├── color_node.hpp
+│   ├── conic.cpp
+│   ├── conic.hpp
+│   ├── geometry_node.cpp
+│   ├── geometry_node.hpp
+│   ├── graphics.hpp
+│   ├── image_data.cpp
+│   ├── image_data.hpp
+│   ├── light_node.cpp
+│   ├── light_node.hpp
+│   ├── mesh_teapot.cpp
+│   ├── mesh_teapot.hpp
+│   ├── presentation_node.cpp
+│   ├── presentation_node.hpp
+│   ├── scene.cpp
+│   ├── scene.hpp
+│   ├── scene_node.cpp
+│   ├── scene_node.hpp
+│   ├── scene_state.cpp
+│   ├── scene_state.hpp
+│   ├── shader_node.cpp
+│   ├── shader_node.hpp
+│   ├── sphere_section.cpp
+│   ├── sphere_section.hpp
+│   ├── surface_of_revolution.cpp
+│   ├── surface_of_revolution.hpp
+│   ├── torus.cpp
+│   ├── torus.hpp
+│   ├── transform_node.cpp
+│   ├── transform_node.hpp
+│   ├── tri_surface.cpp
+│   ├── tri_surface.hpp
+│   ├── unit_square.cpp
+│   └── unit_square.hpp
+├── shader_support
+│   ├── CMakeLists.txt
+│   ├── glsl_shader.cpp
+│   ├── glsl_shader.hpp
+│   ├── glsl_shader_program.cpp
+│   └── glsl_shader_program.hpp
+└── textures
+    ├── cokecan.jpg
+    ├── cokecan.png
+    ├── dogs_poker.jpg
+    ├── earthp2.jpg
+    ├── floor_tiles.jpg
+    └── grainy_wood.jpg
+
+95 directories, 908 files

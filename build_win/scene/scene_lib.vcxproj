@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D83E777B-F65F-34AA-96CE-AF147EFC7DDA}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>scene_lib</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\scene\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">scene_lib.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">scene_lib</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\scene\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">scene_lib.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">scene_lib</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\lib\win\glew\include;$(ProjectDir)..\..\;$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;NOMINMAX;_WINDOWS;SRC_ROOT="$(ProjectDir)..\..";BUILD_WINDOWS;SRC_DIR="$(ProjectDir)..";RESOURCE_DIR="$(ProjectDir)..\..\resources";GL_GLEXT_PROTOTYPES;GL_SILENCE_DEPRECATION</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;NOMINMAX;_DEBUG;_WINDOWS;SRC_ROOT="$(ProjectDir)..\..";BUILD_WINDOWS;SRC_DIR=\"$(ProjectDir)..\..\";RESOURCE_DIR=\"$(ProjectDir)..\..\resources\";GL_GLEXT_PROTOTYPES;GL_SILENCE_DEPRECATION</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\lib\win\glew\include;$(ProjectDir)..\..\;$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\lib\win\glew\include;$(ProjectDir)..\..\;$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)../../$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\lib\win\glew\include;$(ProjectDir)..\..\;$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;NOMINMAX;_WINDOWS;NDEBUG;SRC_ROOT="$(ProjectDir)..\..";BUILD_WINDOWS;SRC_DIR="$(ProjectDir)..";RESOURCE_DIR="$(ProjectDir)..\..\resources";GL_GLEXT_PROTOTYPES;GL_SILENCE_DEPRECATION</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;NOMINMAX;_WINDOWS;NDEBUG;SRC_ROOT="$(ProjectDir)..\..";BUILD_WINDOWS;SRC_DIR=\"$(ProjectDir)..\..\";RESOURCE_DIR=\"$(ProjectDir)..\..\resources\";GL_GLEXT_PROTOTYPES;GL_SILENCE_DEPRECATION</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\lib\win\glew\include;$(ProjectDir)..\..\;$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\lib\win\glew\include;$(ProjectDir)..\..\;$(ProjectDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)../../$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="$(ProjectDir)..\..\scene\camera_node.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\color3.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\color4.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\color_node.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\conic.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\geometry_node.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\image_data.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\light_node.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\mesh_teapot.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\presentation_node.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\scene.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\scene_node.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\scene_state.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\shader_node.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\sphere_section.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\surface_of_revolution.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\transform_node.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\torus.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\tri_surface.cpp" />
+    <ClCompile Include="$(ProjectDir)..\..\scene\unit_square.cpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\camera_node.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\color3.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\color4.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\color_node.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\conic.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\geometry_node.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\graphics.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\image_data.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\light_node.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\mesh_teapot.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\presentation_node.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\scene.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\scene_node.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\scene_state.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\shader_node.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\sphere_section.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\surface_of_revolution.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\torus.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\transform_node.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\tri_surface.hpp" />
+    <ClInclude Include="$(ProjectDir)..\..\scene\unit_square.hpp" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

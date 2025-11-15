@@ -1,0 +1,2 @@
+/usr/bin/ar qc libshader_support_lib.a CMakeFiles/shader_support_lib.dir/glsl_shader.cpp.o CMakeFiles/shader_support_lib.dir/glsl_shader_program.cpp.o
+/usr/bin/ranlib libshader_support_lib.a
