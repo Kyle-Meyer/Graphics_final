@@ -1,9 +1,11 @@
 #include "scene/tri_surface.hpp"
 
+#include <cmath>
+
 namespace cg
 {
 
-TriSurface::TriSurface() : vao_{0}, vbo_{0}, facebuffer_{0}, has_texture_coords_{false}, GeometryNode()
+TriSurface::TriSurface() : vao_{0}, vbo_{0}, facebuffer_{0}, has_texture_coords_{false}, has_tangent_space_{false}, GeometryNode()
 {
 }
 
@@ -250,6 +252,185 @@ uint16_t TriSurface::add_vertex(const Point3 &vtx)
     VertexAndNormal vertex_and_normal(vtx);
     vertices_.push_back(vertex_and_normal);
     return static_cast<uint16_t>(vertices_.size() - 1);
+}
+
+void TriSurface::calculate_tangent_space()
+{
+    if (vertices_with_tex_.empty())
+    {
+        return;
+    }
+
+    // Initialize tangent space vertices from texture vertices
+    vertices_with_tangents_.resize(vertices_with_tex_.size());
+    for (size_t i = 0; i < vertices_with_tex_.size(); i++)
+    {
+        vertices_with_tangents_[i].vertex = vertices_with_tex_[i].vertex;
+        vertices_with_tangents_[i].normal = vertices_with_tex_[i].normal;
+        vertices_with_tangents_[i].texcoord = vertices_with_tex_[i].texcoord;
+        vertices_with_tangents_[i].tangent = Vector3(0.0f, 0.0f, 0.0f);
+        vertices_with_tangents_[i].bitangent = Vector3(0.0f, 0.0f, 0.0f);
+    }
+
+    // Calculate tangent and bitangent for each triangle
+    for (size_t i = 0; i < faces_.size(); i += 3)
+    {
+        uint16_t i0 = faces_[i];
+        uint16_t i1 = faces_[i + 1];
+        uint16_t i2 = faces_[i + 2];
+
+        const Point3 &v0 = vertices_with_tangents_[i0].vertex;
+        const Point3 &v1 = vertices_with_tangents_[i1].vertex;
+        const Point3 &v2 = vertices_with_tangents_[i2].vertex;
+
+        const Point2 &uv0 = vertices_with_tangents_[i0].texcoord;
+        const Point2 &uv1 = vertices_with_tangents_[i1].texcoord;
+        const Point2 &uv2 = vertices_with_tangents_[i2].texcoord;
+
+        // Edge vectors
+        Vector3 edge1(v0, v1);
+        Vector3 edge2(v0, v2);
+
+        // UV deltas
+        float du1 = uv1.x - uv0.x;
+        float dv1 = uv1.y - uv0.y;
+        float du2 = uv2.x - uv0.x;
+        float dv2 = uv2.y - uv0.y;
+
+        float det = du1 * dv2 - du2 * dv1;
+        if (std::abs(det) < 1e-6f)
+        {
+            // Degenerate UV - use default tangent space
+            continue;
+        }
+
+        float r = 1.0f / det;
+
+        Vector3 tangent(
+            r * (dv2 * edge1.x - dv1 * edge2.x),
+            r * (dv2 * edge1.y - dv1 * edge2.y),
+            r * (dv2 * edge1.z - dv1 * edge2.z)
+        );
+
+        Vector3 bitangent(
+            r * (-du2 * edge1.x + du1 * edge2.x),
+            r * (-du2 * edge1.y + du1 * edge2.y),
+            r * (-du2 * edge1.z + du1 * edge2.z)
+        );
+
+        // Accumulate for averaging
+        vertices_with_tangents_[i0].tangent += tangent;
+        vertices_with_tangents_[i1].tangent += tangent;
+        vertices_with_tangents_[i2].tangent += tangent;
+
+        vertices_with_tangents_[i0].bitangent += bitangent;
+        vertices_with_tangents_[i1].bitangent += bitangent;
+        vertices_with_tangents_[i2].bitangent += bitangent;
+    }
+
+    // Orthonormalize using Gram-Schmidt
+    for (auto &v : vertices_with_tangents_)
+    {
+        Vector3 &n = v.normal;
+        Vector3 &t = v.tangent;
+        Vector3 &b = v.bitangent;
+
+        // Gram-Schmidt: t' = t - (n . t) * n
+        float dot_nt = n.dot(t);
+        t.x -= dot_nt * n.x;
+        t.y -= dot_nt * n.y;
+        t.z -= dot_nt * n.z;
+        t.normalize();
+
+        // Recalculate bitangent: b = n x t
+        b = n.cross(t);
+        b.normalize();
+    }
+
+    has_tangent_space_ = true;
+}
+
+void TriSurface::create_vertex_buffers(int32_t position_loc, int32_t normal_loc, int32_t texcoord_loc,
+                                       int32_t tangent_loc, int32_t bitangent_loc)
+{
+    has_texture_coords_ = true;
+    has_tangent_space_ = true;
+
+    // Generate vertex buffers
+    glGenBuffers(1, &vbo_);
+    glGenBuffers(1, &facebuffer_);
+
+    // Bind vertex data
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+    glBufferData(GL_ARRAY_BUFFER,
+                 vertices_with_tangents_.size() * sizeof(VertexNormalTextureTangent),
+                 (void *)&vertices_with_tangents_[0],
+                 GL_STATIC_DRAW);
+
+    // Bind face data
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, facebuffer_);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                 faces_.size() * sizeof(uint16_t),
+                 (void *)&faces_[0],
+                 GL_STATIC_DRAW);
+
+    face_count_ = static_cast<GLsizei>(faces_.size());
+
+    // Create and configure VAO
+    glGenVertexArrays(1, &vao_);
+    glBindVertexArray(vao_);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+
+    size_t offset = 0;
+
+    // Position (3 floats)
+    if (position_loc >= 0)
+    {
+        glVertexAttribPointer(position_loc, 3, GL_FLOAT, GL_FALSE,
+                              sizeof(VertexNormalTextureTangent), (void *)offset);
+        glEnableVertexAttribArray(position_loc);
+    }
+    offset += sizeof(Point3);
+
+    // Normal (3 floats)
+    if (normal_loc >= 0)
+    {
+        glVertexAttribPointer(normal_loc, 3, GL_FLOAT, GL_FALSE,
+                              sizeof(VertexNormalTextureTangent), (void *)offset);
+        glEnableVertexAttribArray(normal_loc);
+    }
+    offset += sizeof(Vector3);
+
+    // Texcoord (2 floats)
+    if (texcoord_loc >= 0)
+    {
+        glVertexAttribPointer(texcoord_loc, 2, GL_FLOAT, GL_FALSE,
+                              sizeof(VertexNormalTextureTangent), (void *)offset);
+        glEnableVertexAttribArray(texcoord_loc);
+    }
+    offset += sizeof(Point2);
+
+    // Tangent (3 floats)
+    if (tangent_loc >= 0)
+    {
+        glVertexAttribPointer(tangent_loc, 3, GL_FLOAT, GL_FALSE,
+                              sizeof(VertexNormalTextureTangent), (void *)offset);
+        glEnableVertexAttribArray(tangent_loc);
+    }
+    offset += sizeof(Vector3);
+
+    // Bitangent (3 floats)
+    if (bitangent_loc >= 0)
+    {
+        glVertexAttribPointer(bitangent_loc, 3, GL_FLOAT, GL_FALSE,
+                              sizeof(VertexNormalTextureTangent), (void *)offset);
+        glEnableVertexAttribArray(bitangent_loc);
+    }
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, facebuffer_);
+
+    glBindVertexArray(0);
 }
 
 } // namespace cg

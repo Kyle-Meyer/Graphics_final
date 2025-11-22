@@ -1,2 +1,0 @@
-/usr/bin/ar qc libfilesystem_support_lib.a CMakeFiles/filesystem_support_lib.dir/file_loader.cpp.o CMakeFiles/filesystem_support_lib.dir/file_locator.cpp.o
-/usr/bin/ranlib libfilesystem_support_lib.a

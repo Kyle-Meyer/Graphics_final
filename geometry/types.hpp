@@ -39,11 +39,30 @@ struct VertexNormalTexture
 
        VertexNormalTexture() : vertex(), normal(), texcoord() {}
        VertexNormalTexture(const Point3 &v) : vertex(v), normal(), texcoord() {}
-       VertexNormalTexture(const Point3 &v, const Vector3 &n) : 
+       VertexNormalTexture(const Point3 &v, const Vector3 &n) :
            vertex(v), normal(n), texcoord() {}
        VertexNormalTexture(const Point3 &v, const Vector3 &n, const Point2 &t) :
            vertex(v), normal(n), texcoord(t) {}
    };
+
+/**
+ * Structure to hold vertex position, normal, texture coords, tangent, and bitangent
+ * for bump/normal mapping
+ */
+struct VertexNormalTextureTangent
+{
+    Point3  vertex;
+    Vector3 normal;
+    Point2  texcoord;
+    Vector3 tangent;
+    Vector3 bitangent;
+
+    VertexNormalTextureTangent() : vertex(), normal(), texcoord(), tangent(), bitangent() {}
+
+    VertexNormalTextureTangent(const Point3 &v, const Vector3 &n, const Point2 &t,
+                               const Vector3 &tan, const Vector3 &bitan)
+        : vertex(v), normal(n), texcoord(t), tangent(tan), bitangent(bitan) {}
+};
 
 } // namespace cg
 

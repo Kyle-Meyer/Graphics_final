@@ -4,6 +4,11 @@
 #include "scene/scene.hpp"
 
 #include "final/multi_texture_shader_node.hpp"
+#include "final/bump_mapping_shader_node.hpp"
+#include "scene/sphere_section.hpp"
+#include "scene/color_node.hpp"
+#include "scene/presentation_node.hpp"
+#include "scene/light_node.hpp"
 
 #include <chrono>
 #include <iostream>
@@ -38,8 +43,12 @@ constexpr int32_t DRAW_INTERVAL_MILLIS =
 std::shared_ptr<cg::SceneNode> g_scene_root;
 std::shared_ptr<cg::CameraNode> g_camera;
 std::shared_ptr<cg::MultiTextureShaderNode> g_multi_tex_shader;
+std::shared_ptr<cg::BumpMappingShaderNode> g_bump_shader;
 
 cg::SceneState g_scene_state;
+
+// Bump mapping controls
+float g_bump_strength = 1.0f;
 
 // Camera controls
 bool    g_animate = false;
@@ -75,7 +84,8 @@ void reshape(int32_t width, int32_t height)
     g_render_width = width;
     g_render_height = height;
     glViewport(0, 0, width, height);
-    g_camera->change_aspect_ratio(static_cast<float>(width) / static_cast<float>(height));
+    float aspect = static_cast<float>(width) / static_cast<float>(height);
+    g_camera->change_aspect_ratio(aspect);
 }
 
 void update_view(int32_t x, int32_t y, bool forward)
@@ -201,6 +211,15 @@ bool handle_key_event(const SDL_Event &event)
         // Print current settings
         case SDLK_SPACE:
             print_current_mode();
+            break;
+
+        // Bump strength adjustment
+        case SDLK_N:
+            g_bump_strength += upper_case ? 0.2f : -0.2f;
+            if (g_bump_strength < 0.0f) g_bump_strength = 0.0f;
+            if (g_bump_strength > 3.0f) g_bump_strength = 3.0f;
+            if (g_bump_shader) g_bump_shader->set_bump_strength(g_bump_strength);
+            std::cout << "Bump strength: " << g_bump_strength << "\n";
             break;
     }
 
@@ -360,26 +379,112 @@ void construct_scene()
     cube_transform->rotate_x(30.0f);
     cube_transform->scale(15.0f, 15.0f, 15.0f);
 
-    // Construct scene graph
+    // Construct scene graph with camera at top (shared by all shaders)
     g_scene_root = std::make_shared<cg::SceneNode>();
-    g_scene_root->add_child(g_multi_tex_shader);
-    g_multi_tex_shader->add_child(g_camera);
+    g_scene_root->add_child(g_camera);
 
-    // Add geometry
-    g_camera->add_child(center_plane_transform);
+    // Multi-texture shader branch
+    g_camera->add_child(g_multi_tex_shader);
+
+    // Add geometry to multi-texture shader
+    g_multi_tex_shader->add_child(center_plane_transform);
     center_plane_transform->add_child(unit_square);
 
-    g_camera->add_child(left_wall_transform);
+    g_multi_tex_shader->add_child(left_wall_transform);
     left_wall_transform->add_child(unit_square);
 
-    g_camera->add_child(right_wall_transform);
+    g_multi_tex_shader->add_child(right_wall_transform);
     right_wall_transform->add_child(unit_square);
 
-    g_camera->add_child(back_wall_transform);
+    g_multi_tex_shader->add_child(back_wall_transform);
     back_wall_transform->add_child(unit_square);
 
-    g_camera->add_child(cube_transform);
+    g_multi_tex_shader->add_child(cube_transform);
     cube_transform->add_child(unit_square);
+
+    // =====================================================
+    // BUMP MAPPING SECTION - Red sphere with bump map
+    // =====================================================
+    std::cout << "\nSetting up bump-mapped sphere...\n";
+
+    // Create bump mapping shader
+    g_bump_shader = std::make_shared<cg::BumpMappingShaderNode>();
+    if (!g_bump_shader->create("bump_mapping.vert", "bump_mapping.frag"))
+    {
+        std::cout << "Failed to create bump mapping shader\n";
+        exit(-1);
+    }
+    if (!g_bump_shader->get_locations())
+    {
+        std::cout << "Failed to get bump shader locations\n";
+        exit(-1);
+    }
+
+    // Set global ambient light
+    g_bump_shader->set_global_ambient(cg::Color4(0.2f, 0.2f, 0.2f, 1.0f));
+    g_bump_shader->set_bump_strength(g_bump_strength);
+
+    // Load bump/normal map texture
+    cg::ImageData normal_map;
+    load_image_data(normal_map, "bumper.jpg", false);
+    if (normal_map.data)
+    {
+        g_bump_shader->bind_normal_map(&normal_map);
+        free_image_data(normal_map);
+    }
+    else
+    {
+        std::cout << "Warning: Could not load bumper.jpg normal map\n";
+    }
+
+    // Create a light for the bump-mapped objects
+    auto bump_light = std::make_shared<cg::LightNode>(0);
+    bump_light->enable();
+    bump_light->set_position(cg::HPoint3(50.0f, -50.0f, 80.0f, 1.0f));  // Point light
+    bump_light->set_ambient(cg::Color4(0.1f, 0.1f, 0.1f, 1.0f));
+    bump_light->set_diffuse(cg::Color4(1.0f, 1.0f, 1.0f, 1.0f));
+    bump_light->set_specular(cg::Color4(1.0f, 1.0f, 1.0f, 1.0f));
+    bump_light->set_attenuation(1.0f, 0.0f, 0.0f);  // No distance attenuation
+
+    // Create red glossy material for the sphere (use PresentationNode for full material support)
+    auto red_material = std::make_shared<cg::PresentationNode>(
+        cg::Color4(0.2f, 0.0f, 0.0f, 1.0f),   // ambient
+        cg::Color4(0.8f, 0.1f, 0.1f, 1.0f),   // diffuse
+        cg::Color4(1.0f, 1.0f, 1.0f, 1.0f),   // specular
+        cg::Color4(0.0f, 0.0f, 0.0f, 1.0f),   // emission
+        64.0f                                   // shininess
+    );
+
+    // Get bump shader attribute locations
+    int bump_pos_loc = g_bump_shader->get_position_loc();
+    int bump_norm_loc = g_bump_shader->get_normal_loc();
+    int bump_tex_loc = g_bump_shader->get_texcoord_loc();
+    int bump_tan_loc = g_bump_shader->get_tangent_loc();
+    int bump_bitan_loc = g_bump_shader->get_bitangent_loc();
+
+    // Create unit square geometry with tangent space (for testing bump mapping on flat surface)
+    auto bump_square = std::make_shared<cg::UnitSquareSurface>(
+        10,  // subdivisions
+        bump_pos_loc, bump_norm_loc, bump_tex_loc,
+        bump_tan_loc, bump_bitan_loc
+    );
+
+    // Transform for the square - position it to the right of the cube, facing camera
+    auto square_transform = std::make_shared<cg::TransformNode>();
+    square_transform->translate(35.0f, 0.0f, 25.0f);
+    square_transform->rotate_x(90.0f);  // Rotate to face camera (camera is at -Y)
+    square_transform->scale(25.0f, 25.0f, 1.0f);
+
+    // Build bump mapping branch (shares camera with multi-tex branch):
+    // g_camera -> g_bump_shader -> bump_light -> red_material -> square_transform -> bump_square
+    g_camera->add_child(g_bump_shader);
+    g_bump_shader->add_child(bump_light);
+    bump_light->add_child(red_material);
+    red_material->add_child(square_transform);
+    square_transform->add_child(bump_square);
+
+    std::cout << "Bump-mapped red square added to scene!\n";
+    std::cout << "Press N/n to adjust bump strength\n\n";
 }
 
 int main(int argc, char **argv)
@@ -388,7 +493,7 @@ int main(int argc, char **argv)
 
     // Print controls
     std::cout << "\n====================================\n";
-    std::cout << "    MULTI-TEXTURING DEMO\n";
+    std::cout << "  MULTI-TEXTURING & BUMP MAPPING DEMO\n";
     std::cout << "====================================\n\n";
     std::cout << "CAMERA CONTROLS:\n";
     std::cout << "  i       - Reset to initial view\n";
@@ -401,6 +506,8 @@ int main(int argc, char **argv)
     std::cout << "  M/m     - Increase/decrease mix factor\n";
     std::cout << "  1-4     - Toggle textures 0-3\n";
     std::cout << "  SPACE   - Print current settings\n\n";
+    std::cout << "BUMP MAPPING CONTROLS:\n";
+    std::cout << "  N/n     - Increase/decrease bump strength\n\n";
     std::cout << "  ESC     - Exit\n";
     std::cout << "====================================\n\n";
 

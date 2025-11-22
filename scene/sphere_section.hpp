@@ -68,6 +68,22 @@ class SphereSection : public TriSurface
                   int32_t  normal_loc,
                   int32_t  texcoord_loc);
 
+    /**
+     * Creates a sphere section with texture coordinates and tangent space for bump mapping.
+     */
+    SphereSection(float    min_lat,
+                  float    max_lat,
+                  uint32_t num_lat,
+                  float    min_lon,
+                  float    max_lon,
+                  uint32_t num_lon,
+                  float    radius,
+                  int32_t  position_loc,
+                  int32_t  normal_loc,
+                  int32_t  texcoord_loc,
+                  int32_t  tangent_loc,
+                  int32_t  bitangent_loc);
+
   private:
     // Make default constructor private to force use of the constructor
     // with number of subdivisions.

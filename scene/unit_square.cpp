@@ -111,4 +111,46 @@ UnitSquareSurface::UnitSquareSurface(uint32_t n, int32_t position_loc, int32_t n
     std::cout << " face list size = " << faces_.size() << '\n';
 }
 
+UnitSquareSurface::UnitSquareSurface(uint32_t n, int32_t position_loc, int32_t normal_loc,
+                                     int32_t tex_coord_loc, int32_t tangent_loc, int32_t bitangent_loc)
+{
+    // Only allow 250 subdivision (so it creates less that 65K vertices)
+    if(n > 250) n = 250;
+
+    // Create vertices with tangent space for bump mapping
+    // For a flat surface in XY plane:
+    // - Normal points in +Z (0, 0, 1)
+    // - Tangent points in +X (1, 0, 0) - direction of increasing U
+    // - Bitangent points in +Y (0, 1, 0) - direction of increasing V
+    VertexNormalTextureTangent vtx;
+    vtx.normal = {0.0f, 0.0f, 1.0f};
+    vtx.tangent = {1.0f, 0.0f, 0.0f};
+    vtx.bitangent = {0.0f, 1.0f, 0.0f};
+    vtx.vertex.z = 0.0f;
+
+    float spacing = 1.0f / static_cast<float>(n);
+
+    for(uint32_t row = 0; row <= n; ++row)
+    {
+        vtx.vertex.y = -0.5f + row * spacing;
+        vtx.texcoord.y = static_cast<float>(row) / static_cast<float>(n);
+
+        for(uint32_t col = 0; col <= n; ++col)
+        {
+            vtx.vertex.x = -0.5f + col * spacing;
+            vtx.texcoord.x = static_cast<float>(col) / static_cast<float>(n);
+
+            vertices_with_tangents_.push_back(vtx);
+        }
+    }
+
+    // Construct the face list and create VBOs with tangent space
+    construct_row_col_face_list(n + 1, n + 1);
+    has_tangent_space_ = true;
+    create_vertex_buffers(position_loc, normal_loc, tex_coord_loc, tangent_loc, bitangent_loc);
+
+    std::cout << "vertex list size with tangents = " << vertices_with_tangents_.size();
+    std::cout << " face list size = " << faces_.size() << '\n';
+}
+
 } // namespace cg

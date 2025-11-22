@@ -43,8 +43,8 @@ class UnitSquareSurface : public TriSurface
 
     /**
      * Creates a unit length and width "flat surface" with texture coordinates and scaling.
-     * The surface is composed of triangles such that the unit length/width 
-     * surface is divided into n equal paritions in both x and y. Constructs a 
+     * The surface is composed of triangles such that the unit length/width
+     * surface is divided into n equal paritions in both x and y. Constructs a
      * vertex list and face list for the surface with texture coordinates.
      * Texture coordinates are scaled to allow tiling/repeating of the texture.
      * @param  n              Number of subdivisions in x and y
@@ -54,6 +54,18 @@ class UnitSquareSurface : public TriSurface
      * @param  tex_scale      Texture coordinate scale factor (e.g., 10.0 for 10x10 tiling)
      */
     UnitSquareSurface(uint32_t n, int32_t position_loc, int32_t normal_loc, int32_t tex_coord_loc, float tex_scale);
+
+    /**
+     * Creates a unit square with tangent space for bump mapping.
+     * @param  n              Number of subdivisions in x and y
+     * @param  position_loc   Location of position attribute in shader
+     * @param  normal_loc     Location of normal attribute in shader
+     * @param  tex_coord_loc  Location of texture coordinate attribute in shader
+     * @param  tangent_loc    Location of tangent attribute in shader
+     * @param  bitangent_loc  Location of bitangent attribute in shader
+     */
+    UnitSquareSurface(uint32_t n, int32_t position_loc, int32_t normal_loc,
+                      int32_t tex_coord_loc, int32_t tangent_loc, int32_t bitangent_loc);
 
   private:
     // Make default constructor private to force use of the constructor

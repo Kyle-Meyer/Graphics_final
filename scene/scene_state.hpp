@@ -48,10 +48,12 @@ struct LightUniforms
 struct SceneState
 {
     // Vertex attribute locations
-    GLint position_loc;  // Vertex position attribute location
-    GLint vtx_color_loc; // Vertex color attribute location
-    GLint normal_loc;    // Vertex normal
-    GLint texcoord_loc;  // NEW: Texture coordinate attribute location
+    GLint position_loc;   // Vertex position attribute location
+    GLint vtx_color_loc;  // Vertex color attribute location
+    GLint normal_loc;     // Vertex normal
+    GLint texcoord_loc;   // Texture coordinate attribute location
+    GLint tangent_loc;    // Tangent vector for bump mapping
+    GLint bitangent_loc;  // Bitangent vector for bump mapping
 
     // Uniform locations
     GLint ortho_matrix_loc;    // Orthographic projection location (2-D)

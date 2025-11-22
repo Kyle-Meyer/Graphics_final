@@ -82,6 +82,18 @@ class TriSurface : public GeometryNode
      */
     void create_vertex_buffers(int32_t position_loc, int32_t normal_loc, int32_t texcoord_loc);
 
+    /**
+     * Creates vertex buffers with tangent space (for bump mapping).
+     */
+    void create_vertex_buffers(int32_t position_loc, int32_t normal_loc, int32_t texcoord_loc,
+                               int32_t tangent_loc, int32_t bitangent_loc);
+
+    /**
+     * Calculate tangent space vectors from texture coordinates.
+     * Must be called after vertices_with_tex_ is populated.
+     */
+    void calculate_tangent_space();
+
   protected:
     // Vertex buffer support
     GLsizei face_count_;
@@ -95,6 +107,10 @@ class TriSurface : public GeometryNode
     // Vertex, normal, and texture coordinate list
     std::vector<VertexNormalTexture> vertices_with_tex_;
     bool                             has_texture_coords_;
+
+    // Vertex, normal, texture coordinate, tangent, and bitangent list (for bump mapping)
+    std::vector<VertexNormalTextureTangent> vertices_with_tangents_;
+    bool                                    has_tangent_space_;
 
     // Use uint16_t for face list indexes (OpenGL ES compatible)
     std::vector<uint16_t> faces_;
