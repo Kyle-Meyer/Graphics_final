@@ -15,13 +15,11 @@ namespace cg
  */
 struct Particle
 {
-    Point3 position;         // Current position in world space
-    Vector3 velocity;        // Current velocity
-    Point3 orbit_center;     // Individual orbit center
+    // Static parameters (set once, uploaded to GPU)
     float orbit_radius;      // Radius from orbit center
-    float orbit_speed;       // Angular speed
-    float phase;             // Current phase in orbit
-    float vertical_offset;   // Z-axis wobble offset
+    float orbit_speed;       // Angular speed (radians per second)
+    float phase_offset;      // Starting phase offset
+    
 };
 
 /**
@@ -32,7 +30,7 @@ class ParticleSystemNode : public ShaderNode
   public:
     /**
      * Constructor.
-     * @param center         Center point of the swarm
+     * @param center         Center point of the swarm (not used in local space)
      * @param swarm_radius   Radius of the swarm area
      * @param initial_count  Initial number of particles
      */
@@ -55,12 +53,6 @@ class ParticleSystemNode : public ShaderNode
      * @param  scene_state   Current scene state.
      */
     void draw(SceneState &scene_state) override;
-
-    /**
-     * Update particle positions based on time
-     * @param delta_time  Time elapsed since last update (in seconds)
-     */
-    void update(float delta_time);
 
     /**
      * Add more particles to the swarm
@@ -96,7 +88,6 @@ class ParticleSystemNode : public ShaderNode
   protected:
     // Particle data
     std::vector<Particle> particles_;
-    Point3 swarm_center_;
     float swarm_radius_;
 
     // Particle appearance
@@ -109,10 +100,13 @@ class ParticleSystemNode : public ShaderNode
     size_t vbo_capacity_;  // Current VBO capacity
 
     // Uniform and attribute locations
-    GLint position_loc_;
+    GLint orbit_radius_loc_;
+    GLint orbit_speed_loc_;
+    GLint phase_offset_loc_;
     GLint pvm_matrix_loc_;
     GLint point_size_loc_;
     GLint particle_color_loc_;
+    GLint current_time_loc_;
 
     // Time tracking
     float current_time_;
@@ -131,9 +125,9 @@ class ParticleSystemNode : public ShaderNode
     void setup_buffers();
 
     /**
-     * Update GPU buffer with current particle positions
+     * Upload particle data to GPU (called when particles are added/removed)
      */
-    void update_buffer();
+    void upload_particle_data();
 
     /**
      * Resize GPU buffer if needed
