@@ -303,4 +303,18 @@ if("final" IN_LIST TARGET_LIST)
          DESTINATION ${CMAKE_BINARY_DIR}/)
 
     message(STATUS "Copied particle shaders to build directories")
+
+    # Copy lighting shaders (pixel_lighting) to the final subdirectory in build
+    file(COPY ${CMAKE_SOURCE_DIR}/final/pixel_lighting.vert
+         DESTINATION ${CMAKE_BINARY_DIR}/final/)
+    file(COPY ${CMAKE_SOURCE_DIR}/final/pixel_lighting.frag
+         DESTINATION ${CMAKE_BINARY_DIR}/final/)
+
+    # Copy lighting shaders to root build directory
+    file(COPY ${CMAKE_SOURCE_DIR}/final/pixel_lighting.vert
+         DESTINATION ${CMAKE_BINARY_DIR}/)
+    file(COPY ${CMAKE_SOURCE_DIR}/final/pixel_lighting.frag
+         DESTINATION ${CMAKE_BINARY_DIR}/)
+
+    message(STATUS "Copied lighting shaders to build directories")
 endif()

@@ -75,6 +75,7 @@ struct SceneState
     GLint use_texture_loc;     // Use texture flag uniform location
 
     // Lights
+    uint32_t      lightcount;        // Number of lights in the scene
     uint32_t      max_enabled_light; // Index of the maximum enabled light index
     GLint         lightcount_loc;    // Number of lights uniform
     LightUniforms lights[MAX_LIGHTS];

@@ -1,5 +1,7 @@
 .
 ├── build
+│   ├── bump_mapping.frag
+│   ├── bump_mapping.vert
 │   ├── CMakeCache.txt
 │   ├── CMakeFiles
 │   │   ├── 3.26.5
@@ -20,12 +22,32 @@
 │   │   ├── CMakeConfigureLog.yaml
 │   │   ├── CMakeDirectoryInformation.cmake
 │   │   ├── CMakeScratch
+│   │   ├── final.dir
+│   │   │   ├── build.make
+│   │   │   ├── cmake_clean.cmake
+│   │   │   ├── compiler_depend.make
+│   │   │   ├── compiler_depend.ts
+│   │   │   ├── DependInfo.cmake
+│   │   │   ├── depend.make
+│   │   │   ├── final
+│   │   │   │   ├── bump_mapping_shader_node.cpp.o
+│   │   │   │   ├── bump_mapping_shader_node.cpp.o.d
+│   │   │   │   ├── lighting_shader_node.cpp.o
+│   │   │   │   ├── lighting_shader_node.cpp.o.d
+│   │   │   │   ├── main.cpp.o
+│   │   │   │   ├── main.cpp.o.d
+│   │   │   │   ├── multi_texture_shader_node.cpp.o
+│   │   │   │   ├── multi_texture_shader_node.cpp.o.d
+│   │   │   │   ├── particle_system_node.cpp.o
+│   │   │   │   └── particle_system_node.cpp.o.d
+│   │   │   ├── flags.make
+│   │   │   ├── link.txt
+│   │   │   └── progress.make
 │   │   ├── Makefile2
 │   │   ├── Makefile.cmake
 │   │   ├── Module10.dir
 │   │   │   ├── build.make
 │   │   │   ├── cmake_clean.cmake
-│   │   │   ├── compiler_depend.internal
 │   │   │   ├── compiler_depend.make
 │   │   │   ├── compiler_depend.ts
 │   │   │   ├── DependInfo.cmake
@@ -41,7 +63,6 @@
 │   │   ├── Module9.dir
 │   │   │   ├── build.make
 │   │   │   ├── cmake_clean.cmake
-│   │   │   ├── compiler_depend.internal
 │   │   │   ├── compiler_depend.make
 │   │   │   ├── compiler_depend.ts
 │   │   │   ├── DependInfo.cmake
@@ -58,7 +79,6 @@
 │   │   ├── progress.marks
 │   │   └── TargetDirectories.txt
 │   ├── cmake_install.cmake
-│   ├── compile_commands.json
 │   ├── filesystem_support
 │   │   ├── CMakeFiles
 │   │   │   ├── CMakeDirectoryInformation.cmake
@@ -66,7 +86,6 @@
 │   │   │   │   ├── build.make
 │   │   │   │   ├── cmake_clean.cmake
 │   │   │   │   ├── cmake_clean_target.cmake
-│   │   │   │   ├── compiler_depend.internal
 │   │   │   │   ├── compiler_depend.make
 │   │   │   │   ├── compiler_depend.ts
 │   │   │   │   ├── DependInfo.cmake
@@ -82,6 +101,16 @@
 │   │   ├── cmake_install.cmake
 │   │   ├── libfilesystem_support_lib.a
 │   │   └── Makefile
+│   ├── final
+│   │   ├── bump_mapping.frag
+│   │   ├── bump_mapping.vert
+│   │   ├── final
+│   │   ├── multi_texture.frag
+│   │   ├── multi_texture.vert
+│   │   ├── particle.frag
+│   │   ├── particle.vert
+│   │   ├── pixel_lighting.frag
+│   │   └── pixel_lighting.vert
 │   ├── geometry
 │   │   ├── CMakeFiles
 │   │   │   ├── CMakeDirectoryInformation.cmake
@@ -93,7 +122,6 @@
 │   │   │   │   ├── build.make
 │   │   │   │   ├── cmake_clean.cmake
 │   │   │   │   ├── cmake_clean_target.cmake
-│   │   │   │   ├── compiler_depend.internal
 │   │   │   │   ├── compiler_depend.make
 │   │   │   │   ├── compiler_depend.ts
 │   │   │   │   ├── DependInfo.cmake
@@ -138,6 +166,12 @@
 │   │   └── Module10
 │   ├── Module9
 │   │   └── Module9
+│   ├── multi_texture.frag
+│   ├── multi_texture.vert
+│   ├── particle.frag
+│   ├── particle.vert
+│   ├── pixel_lighting.frag
+│   ├── pixel_lighting.vert
 │   ├── scene
 │   │   ├── CMakeFiles
 │   │   │   ├── CMakeDirectoryInformation.cmake
@@ -154,7 +188,6 @@
 │   │   │       ├── color4.cpp.o.d
 │   │   │       ├── color_node.cpp.o
 │   │   │       ├── color_node.cpp.o.d
-│   │   │       ├── compiler_depend.internal
 │   │   │       ├── compiler_depend.make
 │   │   │       ├── compiler_depend.ts
 │   │   │       ├── conic.cpp.o
@@ -205,7 +238,6 @@
 │       │       ├── build.make
 │       │       ├── cmake_clean.cmake
 │       │       ├── cmake_clean_target.cmake
-│       │       ├── compiler_depend.internal
 │       │       ├── compiler_depend.make
 │       │       ├── compiler_depend.ts
 │       │       ├── DependInfo.cmake
@@ -255,11 +287,23 @@
 │   ├── file_locator.hpp
 │   └── preprocessor.hpp
 ├── final
+│   ├── bump_mapping.frag
+│   ├── bump_mapping_shader_node.cpp
+│   ├── bump_mapping_shader_node.hpp
+│   ├── bump_mapping.vert
+│   ├── lighting_shader_node.cpp
+│   ├── lighting_shader_node.hpp
 │   ├── main.cpp
 │   ├── multi_texture.frag
 │   ├── multi_texture_shader_node.cpp
 │   ├── multi_texture_shader_node.hpp
-│   └── multi_texture.vert
+│   ├── multi_texture.vert
+│   ├── particle.frag
+│   ├── particle_system_node.cpp
+│   ├── particle_system_node.hpp
+│   ├── particle.vert
+│   ├── pixel_lighting.frag
+│   └── pixel_lighting.vert
 ├── geometry
 │   ├── aabb.cpp
 │   ├── aabb.hpp
@@ -807,7 +851,6 @@
 ├── lib
 │   ├── linux
 │   │   └── SDL3
-│   │       ├── libSDL3.so -> libSDL3.so.0
 │   │       ├── libSDL3.so.0 -> libSDL3.so.0.1.7
 │   │       └── libSDL3.so.0.1.7
 │   ├── macos
@@ -903,35 +946,13 @@
 │   │           │   └── SDL3
 │   │           └── Current -> A
 │   └── win
-│       ├── glew
-│       │   ├── bin
-│       │   │   ├── x64
-│       │   │   │   └── glew32.dll
-│       │   │   └── x86
-│       │   │       └── glew32.dll
-│       │   ├── include
-│       │   │   └── GL
-│       │   │       ├── eglew.h
-│       │   │       ├── glew.h
-│       │   │       ├── glxew.h
-│       │   │       └── wglew.h
-│       │   └── lib
-│       │       ├── x64
-│       │       │   ├── glew32.lib
-│       │       │   └── glew32s.lib
-│       │       └── x86
-│       │           ├── glew32.lib
-│       │           └── glew32s.lib
-│       └── SDL3
-│           ├── arm64
-│           │   ├── SDL3.dll
-│           │   └── SDL3.lib
-│           ├── x64
-│           │   ├── SDL3.dll
-│           │   └── SDL3.lib
-│           └── x86
-│               ├── SDL3.dll
-│               └── SDL3.lib
+│       └── glew
+│           └── include
+│               └── GL
+│                   ├── eglew.h
+│                   ├── glew.h
+│                   ├── glxew.h
+│                   └── wglew.h
 ├── Module10
 │   ├── lighting_shader_node.cpp
 │   ├── lighting_shader_node.hpp
@@ -996,6 +1017,7 @@
 │   ├── glsl_shader_program.cpp
 │   └── glsl_shader_program.hpp
 └── textures
+    ├── bumper.jpg
     ├── cokecan.jpg
     ├── cokecan.png
     ├── dogs_poker.jpg
@@ -1003,4 +1025,4 @@
     ├── floor_tiles.jpg
     └── grainy_wood.jpg
 
-95 directories, 908 files
+88 directories, 937 files

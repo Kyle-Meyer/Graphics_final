@@ -9,8 +9,8 @@ namespace cg
 {
 
 /**
- * Bump mapping shader node. Provides normal/bump mapping support
- * with full Phong lighting. Independent of multi-texturing.
+ * Bump mapping shader node that extends standard lighting shader.
+ * Provides normal/bump mapping support with full Phong lighting.
  */
 class BumpMappingShaderNode : public ShaderNode
 {
@@ -63,17 +63,18 @@ class BumpMappingShaderNode : public ShaderNode
     int32_t get_bitangent_loc() const { return bitangent_loc_; }
 
   protected:
-    // Attribute locations (explicit layout in shader)
-    static constexpr GLint position_loc_ = 0;
-    static constexpr GLint normal_loc_ = 1;
-    static constexpr GLint texcoord_loc_ = 2;
-    static constexpr GLint tangent_loc_ = 3;
-    static constexpr GLint bitangent_loc_ = 4;
+    // Attribute locations (match Module10 pattern - use glGetAttribLocation)
+    GLint position_loc_;
+    GLint normal_loc_;
+    GLint texcoord_loc_;
+    GLint tangent_loc_;
+    GLint bitangent_loc_;
 
     // Matrix uniform locations
     GLint pvm_matrix_loc_;
     GLint model_matrix_loc_;
     GLint normal_matrix_loc_;
+    GLint camera_position_loc;  // No trailing underscore, matches LightingShaderNode
 
     // Material uniform locations
     GLint material_ambient_loc_;
@@ -82,28 +83,11 @@ class BumpMappingShaderNode : public ShaderNode
     GLint material_emission_loc_;
     GLint material_shininess_loc_;
 
-    // Lighting uniform locations
-    GLint global_ambient_loc_;
-    GLint camera_position_loc_;
-    GLint num_lights_loc_;
-
-    // Light array uniform locations
-    struct LightLocs {
-        GLint enabled;
-        GLint is_spotlight;
-        GLint position;
-        GLint ambient;
-        GLint diffuse;
-        GLint specular;
-        GLint constant_atten;
-        GLint linear_atten;
-        GLint quadratic_atten;
-        GLint spot_cutoff;
-        GLint spot_exponent;
-        GLint spot_direction;
-    };
-    static constexpr int MAX_LIGHTS = 8;
-    LightLocs light_locs_[MAX_LIGHTS];
+    // Lighting uniforms (match LightingShaderNode pattern EXACTLY)
+    int32_t       light_count_;
+    GLint         light_count_loc_;
+    GLint         global_ambient_loc_;
+    LightUniforms lights_[3];  // Support 3 lights like LightingShaderNode
 
     // Normal map uniform locations
     GLint normal_map_loc_;

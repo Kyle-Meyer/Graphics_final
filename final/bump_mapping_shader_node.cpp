@@ -10,7 +10,8 @@ BumpMappingShaderNode::BumpMappingShaderNode()
     : normal_map_texture_id_(0),
       normal_map_bound_(false),
       normal_mapping_enabled_(true),
-      bump_strength_(1.0f)
+      bump_strength_(1.0f),
+      light_count_(3)  // Support 3 lights like LightingShaderNode
 {
     node_type_ = SceneNodeType::SHADER;
 
@@ -28,85 +29,135 @@ BumpMappingShaderNode::~BumpMappingShaderNode()
 
 bool BumpMappingShaderNode::get_locations()
 {
-    GLuint prog = shader_program_.get_program();
-
-    // Matrix uniforms
-    pvm_matrix_loc_ = glGetUniformLocation(prog, "pvm_matrix");
-    if (pvm_matrix_loc_ < 0)
+    // Get attribute locations using glGetAttribLocation (NOT hardcoded layout locations)
+    position_loc_ = glGetAttribLocation(shader_program_.get_program(), "vtx_position");
+    if (position_loc_ < 0)
     {
-        std::cout << "Error: pvm_matrix uniform not found\n";
+        std::cout << "Error getting vtx_position location\n";
         return false;
     }
 
-    model_matrix_loc_ = glGetUniformLocation(prog, "model_matrix");
+    normal_loc_ = glGetAttribLocation(shader_program_.get_program(), "vtx_normal");
+    if (normal_loc_ < 0)
+    {
+        std::cout << "Error getting vtx_normal location\n";
+        return false;
+    }
+
+    texcoord_loc_ = glGetAttribLocation(shader_program_.get_program(), "vtx_texcoord");
+    if (texcoord_loc_ < 0)
+    {
+        std::cout << "Warning: vtx_texcoord location not found\n";
+    }
+
+    tangent_loc_ = glGetAttribLocation(shader_program_.get_program(), "vtx_tangent");
+    if (tangent_loc_ < 0)
+    {
+        std::cout << "Warning: vtx_tangent location not found\n";
+    }
+
+    bitangent_loc_ = glGetAttribLocation(shader_program_.get_program(), "vtx_bitangent");
+    if (bitangent_loc_ < 0)
+    {
+        std::cout << "Warning: vtx_bitangent location not found\n";
+    }
+
+    // Get matrix uniform locations
+    pvm_matrix_loc_ = glGetUniformLocation(shader_program_.get_program(), "pvm_matrix");
+    if (pvm_matrix_loc_ < 0)
+    {
+        std::cout << "Error getting pvm_matrix location\n";
+        return false;
+    }
+
+    model_matrix_loc_ = glGetUniformLocation(shader_program_.get_program(), "model_matrix");
     if (model_matrix_loc_ < 0)
     {
-        std::cout << "Warning: model_matrix uniform not found (may be optimized out)\n";
+        std::cout << "Error getting model_matrix location\n";
+        return false;
     }
 
-    normal_matrix_loc_ = glGetUniformLocation(prog, "normal_matrix");
+    normal_matrix_loc_ = glGetUniformLocation(shader_program_.get_program(), "normal_matrix");
     if (normal_matrix_loc_ < 0)
     {
-        std::cout << "Warning: normal_matrix uniform not found (may be optimized out)\n";
+        std::cout << "Error getting normal_matrix location\n";
+        return false;
     }
 
-    // Material uniforms
-    material_ambient_loc_ = glGetUniformLocation(prog, "material_ambient");
-    material_diffuse_loc_ = glGetUniformLocation(prog, "material_diffuse");
-    material_specular_loc_ = glGetUniformLocation(prog, "material_specular");
-    material_emission_loc_ = glGetUniformLocation(prog, "material_emission");
-    material_shininess_loc_ = glGetUniformLocation(prog, "material_shininess");
+    camera_position_loc = glGetUniformLocation(shader_program_.get_program(), "camera_position");
+    if (camera_position_loc < 0)
+    {
+        std::cout << "Error getting camera_position location\n";
+        return false;
+    }
 
-    // Lighting uniforms
-    global_ambient_loc_ = glGetUniformLocation(prog, "global_ambient");
-    camera_position_loc_ = glGetUniformLocation(prog, "camera_position");
-    num_lights_loc_ = glGetUniformLocation(prog, "num_lights");
+    // Get material uniform locations
+    material_ambient_loc_ = glGetUniformLocation(shader_program_.get_program(), "material_ambient");
+    material_diffuse_loc_ = glGetUniformLocation(shader_program_.get_program(), "material_diffuse");
+    material_specular_loc_ = glGetUniformLocation(shader_program_.get_program(), "material_specular");
+    material_emission_loc_ = glGetUniformLocation(shader_program_.get_program(), "material_emission");
+    material_shininess_loc_ = glGetUniformLocation(shader_program_.get_program(), "material_shininess");
 
-    // Light array uniforms
+    // Get lighting uniform locations (EXACTLY like LightingShaderNode)
+    light_count_loc_ = glGetUniformLocation(shader_program_.get_program(), "num_lights");
+    if (light_count_loc_ < 0)
+    {
+        std::cout << "Error getting num_lights location\n";
+        return false;
+    }
+
+    global_ambient_loc_ = glGetUniformLocation(shader_program_.get_program(), "global_light_ambient");
+    if (global_ambient_loc_ < 0)
+    {
+        std::cout << "Error getting global_light_ambient location\n";
+        return false;
+    }
+
+    // Get light array uniforms (use same names as LightingShaderNode/LightNode expect)
     char name[128];
-    for (int i = 0; i < MAX_LIGHTS; i++)
+    for (int i = 0; i < light_count_; i++)
     {
         snprintf(name, 128, "lights[%d].enabled", i);
-        light_locs_[i].enabled = glGetUniformLocation(prog, name);
+        lights_[i].enabled = glGetUniformLocation(shader_program_.get_program(), name);
 
-        snprintf(name, 128, "lights[%d].is_spotlight", i);
-        light_locs_[i].is_spotlight = glGetUniformLocation(prog, name);
+        snprintf(name, 128, "lights[%d].spotlight", i);
+        lights_[i].spotlight = glGetUniformLocation(shader_program_.get_program(), name);
 
         snprintf(name, 128, "lights[%d].position", i);
-        light_locs_[i].position = glGetUniformLocation(prog, name);
+        lights_[i].position = glGetUniformLocation(shader_program_.get_program(), name);
 
         snprintf(name, 128, "lights[%d].ambient", i);
-        light_locs_[i].ambient = glGetUniformLocation(prog, name);
+        lights_[i].ambient = glGetUniformLocation(shader_program_.get_program(), name);
 
         snprintf(name, 128, "lights[%d].diffuse", i);
-        light_locs_[i].diffuse = glGetUniformLocation(prog, name);
+        lights_[i].diffuse = glGetUniformLocation(shader_program_.get_program(), name);
 
         snprintf(name, 128, "lights[%d].specular", i);
-        light_locs_[i].specular = glGetUniformLocation(prog, name);
+        lights_[i].specular = glGetUniformLocation(shader_program_.get_program(), name);
 
-        snprintf(name, 128, "lights[%d].constant_atten", i);
-        light_locs_[i].constant_atten = glGetUniformLocation(prog, name);
+        snprintf(name, 128, "lights[%d].constant_attenuation", i);
+        lights_[i].att_constant = glGetUniformLocation(shader_program_.get_program(), name);
 
-        snprintf(name, 128, "lights[%d].linear_atten", i);
-        light_locs_[i].linear_atten = glGetUniformLocation(prog, name);
+        snprintf(name, 128, "lights[%d].linear_attenuation", i);
+        lights_[i].att_linear = glGetUniformLocation(shader_program_.get_program(), name);
 
-        snprintf(name, 128, "lights[%d].quadratic_atten", i);
-        light_locs_[i].quadratic_atten = glGetUniformLocation(prog, name);
+        snprintf(name, 128, "lights[%d].quadratic_attenuation", i);
+        lights_[i].att_quadratic = glGetUniformLocation(shader_program_.get_program(), name);
 
         snprintf(name, 128, "lights[%d].spot_cutoff", i);
-        light_locs_[i].spot_cutoff = glGetUniformLocation(prog, name);
+        lights_[i].spot_cutoff = glGetUniformLocation(shader_program_.get_program(), name);
 
         snprintf(name, 128, "lights[%d].spot_exponent", i);
-        light_locs_[i].spot_exponent = glGetUniformLocation(prog, name);
+        lights_[i].spot_exponent = glGetUniformLocation(shader_program_.get_program(), name);
 
         snprintf(name, 128, "lights[%d].spot_direction", i);
-        light_locs_[i].spot_direction = glGetUniformLocation(prog, name);
+        lights_[i].spot_direction = glGetUniformLocation(shader_program_.get_program(), name);
     }
 
-    // Normal map uniforms
-    normal_map_loc_ = glGetUniformLocation(prog, "normal_map");
-    use_normal_map_loc_ = glGetUniformLocation(prog, "use_normal_map");
-    bump_strength_loc_ = glGetUniformLocation(prog, "bump_strength");
+    // Get normal map uniform locations
+    normal_map_loc_ = glGetUniformLocation(shader_program_.get_program(), "normal_map");
+    use_normal_map_loc_ = glGetUniformLocation(shader_program_.get_program(), "use_normal_map");
+    bump_strength_loc_ = glGetUniformLocation(shader_program_.get_program(), "bump_strength");
 
     std::cout << "BumpMappingShaderNode: All shader locations retrieved\n";
     return true;
@@ -116,64 +167,62 @@ void BumpMappingShaderNode::draw(SceneState &scene_state)
 {
     // Enable this shader program
     shader_program_.use();
-
-    // Set attribute locations in scene state for geometry to use
+    
+    // Set scene state locations
     scene_state.position_loc = position_loc_;
     scene_state.normal_loc = normal_loc_;
     scene_state.texcoord_loc = texcoord_loc_;
     scene_state.tangent_loc = tangent_loc_;
     scene_state.bitangent_loc = bitangent_loc_;
 
-    // Set matrix uniform locations in scene state
     scene_state.pvm_matrix_loc = pvm_matrix_loc_;
     scene_state.model_matrix_loc = model_matrix_loc_;
     scene_state.normal_matrix_loc = normal_matrix_loc_;
+    scene_state.camera_position_loc = camera_position_loc;
 
-    // Set material uniform locations in scene state
+    // Set material uniform locations
     scene_state.material_ambient_loc = material_ambient_loc_;
     scene_state.material_diffuse_loc = material_diffuse_loc_;
     scene_state.material_specular_loc = material_specular_loc_;
     scene_state.material_emission_loc = material_emission_loc_;
     scene_state.material_shininess_loc = material_shininess_loc_;
 
-    // Set light uniform locations in scene state
-    scene_state.camera_position_loc = camera_position_loc_;
-    scene_state.lightcount_loc = num_lights_loc_;
-    for (int i = 0; i < MAX_LIGHTS; i++)
-    {
-        scene_state.lights[i].enabled = light_locs_[i].enabled;
-        scene_state.lights[i].spotlight = light_locs_[i].is_spotlight;
-        scene_state.lights[i].position = light_locs_[i].position;
-        scene_state.lights[i].ambient = light_locs_[i].ambient;
-        scene_state.lights[i].diffuse = light_locs_[i].diffuse;
-        scene_state.lights[i].specular = light_locs_[i].specular;
-        scene_state.lights[i].att_constant = light_locs_[i].constant_atten;
-        scene_state.lights[i].att_linear = light_locs_[i].linear_atten;
-        scene_state.lights[i].att_quadratic = light_locs_[i].quadratic_atten;
-        scene_state.lights[i].spot_cutoff = light_locs_[i].spot_cutoff;
-        scene_state.lights[i].spot_exponent = light_locs_[i].spot_exponent;
-        scene_state.lights[i].spot_direction = light_locs_[i].spot_direction;
-    }
+    // Set global ambient uniform
+    glUniform4f(global_ambient_loc_, 0.2f, 0.2f, 0.2f, 1.0f);
 
-    // Set camera position uniform
-    glUniform3f(camera_position_loc_,
+    // Set number of lights uniform (we expect exactly 1 light)
+    glUniform1i(light_count_loc_, 1);
+
+    // Set camera position
+    glUniform3f(camera_position_loc,
                 scene_state.camera_position.x,
                 scene_state.camera_position.y,
                 scene_state.camera_position.z);
 
+    // CRITICAL: Set light state BEFORE binding textures
+    glUniform1i(lights_[0].enabled, 1);
+    glUniform1i(lights_[0].spotlight, 0);
+    glUniform4f(lights_[0].position, 0.0f, -50.0f, 80.0f, 1.0f);
+    glUniform4f(lights_[0].ambient, 0.2f, 0.2f, 0.2f, 1.0f);
+    glUniform4f(lights_[0].diffuse, 1.0f, 1.0f, 1.0f, 1.0f);
+    glUniform4f(lights_[0].specular, 1.0f, 1.0f, 1.0f, 1.0f);
+    glUniform1f(lights_[0].att_constant, 1.0f);
+    glUniform1f(lights_[0].att_linear, 0.0f);
+    glUniform1f(lights_[0].att_quadratic, 0.0f);
+
     // Bind normal map if available
     if (normal_map_bound_)
     {
-        glActiveTexture(GL_TEXTURE0);
+        glActiveTexture(GL_TEXTURE5);
         glBindTexture(GL_TEXTURE_2D, normal_map_texture_id_);
-        glUniform1i(normal_map_loc_, 0);
+        glUniform1i(normal_map_loc_, 5);
     }
 
     // Set normal mapping uniforms
     glUniform1i(use_normal_map_loc_, (normal_map_bound_ && normal_mapping_enabled_) ? 1 : 0);
     glUniform1f(bump_strength_loc_, bump_strength_);
 
-    // Draw children (lights, transforms, geometry, etc.)
+    // Draw all children
     SceneNode::draw(scene_state);
 }
 

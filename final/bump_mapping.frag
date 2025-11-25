@@ -18,21 +18,21 @@ uniform vec4 material_emission;
 uniform float material_shininess;
 
 // Lighting
-uniform vec4 global_ambient;
+uniform vec4 global_light_ambient;
 uniform vec3 camera_position;
 
 // Light structure (support up to 8 lights)
 const int MAX_LIGHTS = 8;
 struct Light {
     int  enabled;
-    int  is_spotlight;
+    int  spotlight;  // Changed from is_spotlight
     vec4 position;      // w=0 directional, w=1 point
     vec4 ambient;
     vec4 diffuse;
     vec4 specular;
-    float constant_atten;
-    float linear_atten;
-    float quadratic_atten;
+    float constant_attenuation;  // Changed from constant_atten
+    float linear_attenuation;    // Changed from linear_atten
+    float quadratic_attenuation; // Changed from quadratic_atten
     float spot_cutoff;
     float spot_exponent;
     vec3  spot_direction;
@@ -48,9 +48,9 @@ uniform float bump_strength;
 // Compute attenuation for point/spot lights
 float compute_attenuation(int i, float dist)
 {
-    return 1.0 / (lights[i].constant_atten +
-                  lights[i].linear_atten * dist +
-                  lights[i].quadratic_atten * dist * dist);
+    return 1.0 / (lights[i].constant_attenuation +
+                  lights[i].linear_attenuation * dist +
+                  lights[i].quadratic_attenuation * dist * dist);
 }
 
 void main()
@@ -115,7 +115,7 @@ void main()
             attenuation = compute_attenuation(i, dist);
 
             // Spotlight cone
-            if (lights[i].is_spotlight == 1)
+            if (lights[i].spotlight == 1)
             {
                 float spot_cos = dot(-L, normalize(lights[i].spot_direction));
                 if (spot_cos < lights[i].spot_cutoff)
@@ -150,7 +150,7 @@ void main()
 
     // Combine material properties with lighting
     vec4 color = material_emission
-               + global_ambient * material_ambient
+               + global_light_ambient * material_ambient
                + ambient_total * material_ambient
                + diffuse_total * material_diffuse
                + specular_total * material_specular;
