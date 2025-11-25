@@ -11,15 +11,16 @@ namespace cg
 {
 
 /**
- * Particle structure for 3D swarm behavior
+ * Particle structure for fly swarm behavior
  */
 struct Particle
 {
     // Static parameters (set once, uploaded to GPU)
-    float orbit_radius;      // Radius from orbit center
-    float orbit_speed;       // Angular speed (radians per second)
-    float phase_offset;      // Starting phase offset
-    
+    Point3 base_position;    // Base position in swarm (xyz)
+    float speed;             // Movement speed multiplier
+    float noise_scale;       // How far from base position it can wander
+    float orbit_phase;       // Time offset for variation
+    Vector3 noise_offsets;   // Random offsets for noise function
 };
 
 /**
@@ -85,11 +86,20 @@ class ParticleSystemNode : public ShaderNode
      */
     void set_particle_size(float size);
 
+    /**
+     * Set minimum distance from center (prevents clipping through sphere)
+     * @param distance  Minimum distance in local space units
+     */
+    void set_min_distance(float distance);
+
   protected:
     // Particle data
     std::vector<Particle> particles_;
     float swarm_radius_;
 
+    // Constraint parameters
+    float min_distance_;  // Minimum distance from center (sphere surface + buffer)
+    
     // Particle appearance
     float particle_color_[3];  // RGB color
     float point_size_;
@@ -100,13 +110,14 @@ class ParticleSystemNode : public ShaderNode
     size_t vbo_capacity_;  // Current VBO capacity
 
     // Uniform and attribute locations
-    GLint orbit_radius_loc_;
-    GLint orbit_speed_loc_;
-    GLint phase_offset_loc_;
+    GLint base_position_loc_;
+    GLint movement_params_loc_;
+    GLint noise_offsets_loc_;
     GLint pvm_matrix_loc_;
     GLint point_size_loc_;
     GLint particle_color_loc_;
     GLint current_time_loc_;
+    GLint min_distance_loc_; 
 
     // Time tracking
     float current_time_;

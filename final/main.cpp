@@ -230,12 +230,12 @@ bool handle_key_event(const SDL_Event &event)
             {
                 if (upper_case)
                 {
-                    g_particle_system->add_particles(10);
+                    g_particle_system->add_particles(30);
                     std::cout << "Added 10 flies. Total: " << g_particle_system->get_particle_count() << "\n";
                 }
                 else
                 {
-                    g_particle_system->remove_particles(10);
+                    g_particle_system->remove_particles(30);
                     std::cout << "Removed 10 flies. Total: " << g_particle_system->get_particle_count() << "\n";
                 }
             }
@@ -563,6 +563,9 @@ void construct_scene()
     g_particle_system->set_particle_color(0.0f, 0.0f, 0.0f);
     g_particle_system->set_particle_size(10.0f);
 
+    // Sphere has radius 1.0 in local space, so keep flies at least 1.05 units from origin
+    g_particle_system->set_min_distance(2.05f);  // 5% buffer outside sphere surface
+   
     // Add particle system as child of sphere transform so it inherits sphere's transformation
     fly_sphere_transform->add_child(g_particle_system);
 
