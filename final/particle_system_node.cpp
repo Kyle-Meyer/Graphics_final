@@ -19,14 +19,11 @@ ParticleSystemNode::ParticleSystemNode(const Point3& center, float swarm_radius,
     std::random_device rd;
     rng_.seed(rd());
 
-    // Create initial particles
-    particles_.reserve(initial_count);
-    for (int i = 0; i < initial_count; ++i)
-    {
-        Particle p;
-        init_particle(p);
-        particles_.push_back(p);
-    }
+    // Create single particle that will orbit at equator
+    particles_.reserve(1);
+    Particle p;
+    init_particle(p);
+    particles_.push_back(p);
 }
 
 ParticleSystemNode::~ParticleSystemNode()
@@ -53,26 +50,17 @@ bool ParticleSystemNode::get_locations()
 
 void ParticleSystemNode::init_particle(Particle& p)
 {
-    std::uniform_real_distribution<float> angle_dist(0.0f, 2.0f * M_PI);
-    std::uniform_real_distribution<float> radius_dist(5.0f, 15.0f);
+    // Place single sphere on equator at fixed radius in local space
+    float r = swarm_radius_;
 
-    // Simple: place particles randomly around swarm center
-    float theta = angle_dist(rng_);
-    float phi = angle_dist(rng_);
-    float r = radius_dist(rng_);
+    // Start at angle 0 on the equator (XY plane, z=0) in local space
+    p.position = Point3(r, 0.0f, 0.0f);
 
-    // Direct world position - no complex orbit centers
-    p.position = swarm_center_ + Vector3(
-        r * std::sin(phi) * std::cos(theta),
-        r * std::sin(phi) * std::sin(theta),
-        r * std::cos(phi)
-    );
-
-    // Simple orbit parameters
-    p.orbit_center = swarm_center_;
+    // Orbit parameters for equatorial rotation (around local origin)
+    p.orbit_center = Point3(0.0f, 0.0f, 0.0f);
     p.orbit_radius = r;
-    p.orbit_speed = 1.0f;
-    p.phase = theta;
+    p.orbit_speed = 1.0f;  // Radians per second
+    p.phase = 0.0f;        // Starting phase
     p.vertical_offset = 0.0f;
     p.velocity = Vector3(0.0f, 0.0f, 0.0f);
 }
@@ -118,18 +106,16 @@ void ParticleSystemNode::update(float delta_time)
     {
         Particle& p = particles_[i];
 
-        // Simple circular orbit around swarm center
+        // Update phase for circular orbit
         p.phase += p.orbit_speed * delta_time;
         if (p.phase > 2.0f * M_PI)
             p.phase -= 2.0f * M_PI;
 
-        // Calculate position on spherical shell around swarm center
-        float vertical_phase = p.phase * 0.7f;
-
-        p.position = swarm_center_ + Vector3(
-            p.orbit_radius * std::sin(vertical_phase) * std::cos(p.phase),
-            p.orbit_radius * std::sin(vertical_phase) * std::sin(p.phase),
-            p.orbit_radius * std::cos(vertical_phase)
+        // Calculate position on equatorial circle (XY plane, z=0) in local space
+        p.position = Point3(
+            p.orbit_radius * std::cos(p.phase),
+            p.orbit_radius * std::sin(p.phase),
+            0.0f  // Keep at equator (z=0)
         );
     }
 }
@@ -178,24 +164,19 @@ void ParticleSystemNode::draw(SceneState& scene_state)
     // Enable shader program
     glUseProgram(shader_program_.get_program());
 
-    // Debug: Print matrix info once
-    static bool printed = false;
-    if (!printed)
+    // Debug: Print model matrix to verify it has the sphere's transform
+    static int debug_count = 0;
+    if (debug_count++ % 60 == 0)
     {
-        std::cout << "\n=== PARTICLE SYSTEM MATRIX DEBUG ===\n";
-        std::cout << "scene_state.pv first row: " << scene_state.pv.m00() << ", "
-                  << scene_state.pv.m01() << ", " << scene_state.pv.m02() << ", "
-                  << scene_state.pv.m03() << "\n";
-        std::cout << "scene_state.model_matrix first row: " << scene_state.model_matrix.m00() << ", "
-                  << scene_state.model_matrix.m01() << ", " << scene_state.model_matrix.m02() << ", "
-                  << scene_state.model_matrix.m03() << "\n";
-        std::cout << "====================================\n\n";
-        printed = true;
+        std::cout << "Model matrix translation (should be sphere position): ("
+                  << scene_state.model_matrix.m03() << ", "
+                  << scene_state.model_matrix.m13() << ", "
+                  << scene_state.model_matrix.m23() << ")\n";
     }
 
-    // Particles are already in world space, so only use projection-view matrix
-    // Don't multiply by model_matrix since that would transform them again
-    glUniformMatrix4fv(pvm_matrix_loc_, 1, GL_TRUE, scene_state.pv.get());
+    // Particles are in local space, so use full PVM matrix to transform with the primitive
+    Matrix4x4 pvm = scene_state.pv * scene_state.model_matrix;
+    glUniformMatrix4fv(pvm_matrix_loc_, 1, GL_FALSE, pvm.get());
     glUniform1f(point_size_loc_, point_size_);
     glUniform3fv(particle_color_loc_, 1, particle_color_);
 

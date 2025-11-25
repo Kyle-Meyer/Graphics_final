@@ -113,6 +113,12 @@ bool MultiTextureShaderNode::get_locations()
         std::cout << "Warning: mix_factor location not found\n";
     }
 
+    material_diffuse_loc_ = glGetUniformLocation(shader_program_.get_program(), "material_diffuse");
+    if(material_diffuse_loc_ < 0)
+    {
+        std::cout << "Warning: material_diffuse location not found\n";
+    }
+
     return true;
 }
 
@@ -128,6 +134,7 @@ void MultiTextureShaderNode::draw(SceneState &scene_state)
     scene_state.pvm_matrix_loc = pvm_matrix_loc_;
     scene_state.model_matrix_loc = model_matrix_loc_;
     scene_state.normal_matrix_loc = normal_matrix_loc_;
+    scene_state.material_diffuse_loc = material_diffuse_loc_;
 
     // Bind and activate all enabled textures
     for(int i = 0; i < MAX_TEXTURES; i++)

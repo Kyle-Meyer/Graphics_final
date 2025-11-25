@@ -29,6 +29,9 @@ uniform int blend_mode;
 // Mix factor for linear interpolation (used in MIX mode)
 uniform float mix_factor;
 
+// Material color (used when no textures are enabled)
+uniform vec3 material_diffuse;
+
 // Blend two colors based on the current blend mode
 vec4 blend_colors(vec4 color1, vec4 color2, int mode, float factor)
 {
@@ -90,8 +93,8 @@ void main()
     // Blend textures together
     if (enabled_count == 0)
     {
-        // No textures enabled, use a default color (light gray)
-        final_color = vec4(0.7, 0.7, 0.7, 1.0);
+        // No textures enabled, use material color
+        final_color = vec4(material_diffuse, 1.0);
     }
     else if (enabled_count == 1)
     {

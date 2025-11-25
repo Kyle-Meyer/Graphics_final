@@ -122,6 +122,7 @@ class MultiTextureShaderNode : public ShaderNode
     GLint texture_enabled_locs_[MAX_TEXTURES];
     GLint blend_mode_loc_;
     GLint mix_factor_loc_;
+    GLint material_diffuse_loc_;
 
     /**
      * Initialize texture objects.

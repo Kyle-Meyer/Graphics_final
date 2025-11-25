@@ -339,9 +339,9 @@ void construct_scene()
     g_multi_tex_shader->set_blend_mode(g_current_blend_mode);
     g_multi_tex_shader->set_mix_factor(g_mix_factor);
 
-    // Initially enable only first two textures
-    g_multi_tex_shader->set_texture_enabled(0, true);
-    g_multi_tex_shader->set_texture_enabled(1, true);
+    // Disable all textures for now (just render solid colors)
+    g_multi_tex_shader->set_texture_enabled(0, false);
+    g_multi_tex_shader->set_texture_enabled(1, false);
     g_multi_tex_shader->set_texture_enabled(2, false);
     g_multi_tex_shader->set_texture_enabled(3, false);
 
@@ -406,20 +406,21 @@ void construct_scene()
     g_camera->add_child(g_multi_tex_shader);
 
     // Add geometry to multi-texture shader
-    g_multi_tex_shader->add_child(center_plane_transform);
-    center_plane_transform->add_child(unit_square);
+    // COMMENTED OUT FOR PARTICLE ORBIT TESTING
+    // g_multi_tex_shader->add_child(center_plane_transform);
+    // center_plane_transform->add_child(unit_square);
 
-    g_multi_tex_shader->add_child(left_wall_transform);
-    left_wall_transform->add_child(unit_square);
+    // g_multi_tex_shader->add_child(left_wall_transform);
+    // left_wall_transform->add_child(unit_square);
 
-    g_multi_tex_shader->add_child(right_wall_transform);
-    right_wall_transform->add_child(unit_square);
+    // g_multi_tex_shader->add_child(right_wall_transform);
+    // right_wall_transform->add_child(unit_square);
 
-    g_multi_tex_shader->add_child(back_wall_transform);
-    back_wall_transform->add_child(unit_square);
+    // g_multi_tex_shader->add_child(back_wall_transform);
+    // back_wall_transform->add_child(unit_square);
 
-    g_multi_tex_shader->add_child(cube_transform);
-    cube_transform->add_child(unit_square);
+    // g_multi_tex_shader->add_child(cube_transform);
+    // cube_transform->add_child(unit_square);
 
     // =====================================================
     // BUMP MAPPING SECTION - Red sphere with bump map
@@ -496,14 +497,15 @@ void construct_scene()
 
     // Build bump mapping branch (shares camera with multi-tex branch):
     // g_camera -> g_bump_shader -> bump_light -> red_material -> square_transform -> bump_square
-    g_camera->add_child(g_bump_shader);
-    g_bump_shader->add_child(bump_light);
-    bump_light->add_child(red_material);
-    red_material->add_child(square_transform);
-    square_transform->add_child(bump_square);
+    // COMMENTED OUT FOR PARTICLE ORBIT TESTING
+    // g_camera->add_child(g_bump_shader);
+    // g_bump_shader->add_child(bump_light);
+    // bump_light->add_child(red_material);
+    // red_material->add_child(square_transform);
+    // square_transform->add_child(bump_square);
 
-    std::cout << "Bump-mapped red square added to scene!\n";
-    std::cout << "Press N/n to adjust bump strength\n\n";
+    // std::cout << "Bump-mapped red square added to scene!\n";
+    // std::cout << "Press N/n to adjust bump strength\n\n";
 
     // =====================================================
     // PARTICLE SYSTEM - Swarm of flies around sphere
@@ -512,7 +514,7 @@ void construct_scene()
 
     // Create a sphere for flies to swarm around
     auto fly_sphere_color = std::make_shared<cg::ColorNode>(
-        cg::Color4(0.6f, 0.4f, 0.2f, 1.0f)  // Tan/brown color
+        cg::Color4(0.53f, 0.81f, 0.94f, 1.0f)  // Baby blue color
     );
 
     // Create sphere geometry - using multi-texture shader attributes for simplicity
@@ -520,15 +522,17 @@ void construct_scene()
     int fly_norm_loc = g_multi_tex_shader->get_normal_loc();
     int fly_tex_loc = g_multi_tex_shader->get_texcoord_loc();
 
-    auto fly_sphere_geom = std::make_shared<cg::UnitSquareSurface>(
-        20,  // subdivisions for smooth sphere
-        fly_pos_loc, fly_norm_loc, fly_tex_loc,
-        1.0f
+    // Create a full sphere: lat -90 to 90, lon 0 to 360, radius 1.0
+    auto fly_sphere_geom = std::make_shared<cg::SphereSection>(
+        -90.0f, 90.0f, 20,  // latitude range and subdivisions
+        0.0f, 360.0f, 20,   // longitude range and subdivisions
+        1.0f,               // radius (will be scaled by transform)
+        fly_pos_loc, fly_norm_loc, fly_tex_loc
     );
 
-    // Transform for the sphere
+    // Transform for the sphere - move to offset position to clearly see orbit
     auto fly_sphere_transform = std::make_shared<cg::TransformNode>();
-    fly_sphere_transform->translate(-25.0f, 0.0f, 25.0f);
+    fly_sphere_transform->translate(20.0f, 10.0f, 20.0f);  // Offset from camera focal point
     fly_sphere_transform->scale(10.0f, 10.0f, 10.0f);
 
     // Build hierarchy: Camera -> fly_sphere_color -> fly_sphere_transform -> fly_sphere_geom
@@ -536,11 +540,12 @@ void construct_scene()
     fly_sphere_transform->add_child(fly_sphere_geom);
     g_camera->add_child(fly_sphere_color);
 
-    // Create particle system with 50 initial flies swarming around position (-25, 0, 25)
+    // Create particle system in local space (will orbit around sphere when attached as child)
+    // Sphere has local radius 1.0, so orbit radius 1.5 means it orbits at equator + 50% beyond surface
     g_particle_system = std::make_shared<cg::ParticleSystemNode>(
-        cg::Point3(-25.0f, 0.0f, 25.0f),  // Swarm center (same as sphere)
-        15.0f,   // Swarm radius
-        50       // Initial fly count
+        cg::Point3(0.0f, 0.0f, 0.0f),  // Local origin (will be transformed by parent)
+        1.5f,   // Orbit radius in local space (sphere has radius 1.0)
+        1       // Single particle
     );
 
     if (!g_particle_system->create("particle.vert", "particle.frag"))
@@ -554,12 +559,12 @@ void construct_scene()
         exit(-1);
     }
 
-    // Set particle appearance (black flies, size 5 pixels)
+    // Set particle appearance (black particle, larger size to see it)
     g_particle_system->set_particle_color(0.0f, 0.0f, 0.0f);
-    g_particle_system->set_particle_size(5.0f);
+    g_particle_system->set_particle_size(10.0f);
 
-    // Add particle system directly under camera
-    g_camera->add_child(g_particle_system);
+    // Add particle system as child of sphere transform so it inherits sphere's transformation
+    fly_sphere_transform->add_child(g_particle_system);
 
     std::cout << "Fly swarm added to scene!\n";
     std::cout << "Press F/f to add/remove flies\n\n";
