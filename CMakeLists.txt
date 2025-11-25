@@ -289,4 +289,18 @@ if("final" IN_LIST TARGET_LIST)
          DESTINATION ${CMAKE_BINARY_DIR}/)
 
     message(STATUS "Copied bump mapping shaders to build directories")
+
+    # Copy particle shaders to the final subdirectory in build
+    file(COPY ${CMAKE_SOURCE_DIR}/final/particle.vert
+         DESTINATION ${CMAKE_BINARY_DIR}/final/)
+    file(COPY ${CMAKE_SOURCE_DIR}/final/particle.frag
+         DESTINATION ${CMAKE_BINARY_DIR}/final/)
+
+    # Copy particle shaders to root build directory
+    file(COPY ${CMAKE_SOURCE_DIR}/final/particle.vert
+         DESTINATION ${CMAKE_BINARY_DIR}/)
+    file(COPY ${CMAKE_SOURCE_DIR}/final/particle.frag
+         DESTINATION ${CMAKE_BINARY_DIR}/)
+
+    message(STATUS "Copied particle shaders to build directories")
 endif()

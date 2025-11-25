@@ -5,6 +5,7 @@
 
 #include "final/multi_texture_shader_node.hpp"
 #include "final/bump_mapping_shader_node.hpp"
+#include "final/particle_system_node.hpp"
 #include "scene/sphere_section.hpp"
 #include "scene/color_node.hpp"
 #include "scene/presentation_node.hpp"
@@ -44,6 +45,7 @@ std::shared_ptr<cg::SceneNode> g_scene_root;
 std::shared_ptr<cg::CameraNode> g_camera;
 std::shared_ptr<cg::MultiTextureShaderNode> g_multi_tex_shader;
 std::shared_ptr<cg::BumpMappingShaderNode> g_bump_shader;
+std::shared_ptr<cg::ParticleSystemNode> g_particle_system;
 
 cg::SceneState g_scene_state;
 
@@ -220,6 +222,23 @@ bool handle_key_event(const SDL_Event &event)
             if (g_bump_strength > 3.0f) g_bump_strength = 3.0f;
             if (g_bump_shader) g_bump_shader->set_bump_strength(g_bump_strength);
             std::cout << "Bump strength: " << g_bump_strength << "\n";
+            break;
+
+        // Fly count adjustment
+        case SDLK_F:
+            if (g_particle_system)
+            {
+                if (upper_case)
+                {
+                    g_particle_system->add_particles(10);
+                    std::cout << "Added 10 flies. Total: " << g_particle_system->get_particle_count() << "\n";
+                }
+                else
+                {
+                    g_particle_system->remove_particles(10);
+                    std::cout << "Removed 10 flies. Total: " << g_particle_system->get_particle_count() << "\n";
+                }
+            }
             break;
     }
 
@@ -485,6 +504,65 @@ void construct_scene()
 
     std::cout << "Bump-mapped red square added to scene!\n";
     std::cout << "Press N/n to adjust bump strength\n\n";
+
+    // =====================================================
+    // PARTICLE SYSTEM - Swarm of flies around sphere
+    // =====================================================
+    std::cout << "Setting up fly swarm...\n";
+
+    // Create a sphere for flies to swarm around
+    auto fly_sphere_color = std::make_shared<cg::ColorNode>(
+        cg::Color4(0.6f, 0.4f, 0.2f, 1.0f)  // Tan/brown color
+    );
+
+    // Create sphere geometry - using multi-texture shader attributes for simplicity
+    int fly_pos_loc = g_multi_tex_shader->get_position_loc();
+    int fly_norm_loc = g_multi_tex_shader->get_normal_loc();
+    int fly_tex_loc = g_multi_tex_shader->get_texcoord_loc();
+
+    auto fly_sphere_geom = std::make_shared<cg::UnitSquareSurface>(
+        20,  // subdivisions for smooth sphere
+        fly_pos_loc, fly_norm_loc, fly_tex_loc,
+        1.0f
+    );
+
+    // Transform for the sphere
+    auto fly_sphere_transform = std::make_shared<cg::TransformNode>();
+    fly_sphere_transform->translate(-25.0f, 0.0f, 25.0f);
+    fly_sphere_transform->scale(10.0f, 10.0f, 10.0f);
+
+    // Build hierarchy: Camera -> fly_sphere_color -> fly_sphere_transform -> fly_sphere_geom
+    fly_sphere_color->add_child(fly_sphere_transform);
+    fly_sphere_transform->add_child(fly_sphere_geom);
+    g_camera->add_child(fly_sphere_color);
+
+    // Create particle system with 50 initial flies swarming around position (-25, 0, 25)
+    g_particle_system = std::make_shared<cg::ParticleSystemNode>(
+        cg::Point3(-25.0f, 0.0f, 25.0f),  // Swarm center (same as sphere)
+        15.0f,   // Swarm radius
+        50       // Initial fly count
+    );
+
+    if (!g_particle_system->create("particle.vert", "particle.frag"))
+    {
+        std::cout << "Failed to create particle system shader\n";
+        exit(-1);
+    }
+    if (!g_particle_system->get_locations())
+    {
+        std::cout << "Failed to get particle shader locations\n";
+        exit(-1);
+    }
+
+    // Set particle appearance (black flies, size 5 pixels)
+    g_particle_system->set_particle_color(0.0f, 0.0f, 0.0f);
+    g_particle_system->set_particle_size(5.0f);
+
+    // Add particle system directly under camera
+    g_camera->add_child(g_particle_system);
+
+    std::cout << "Fly swarm added to scene!\n";
+    std::cout << "Press F/f to add/remove flies\n\n";
 }
 
 int main(int argc, char **argv)
@@ -508,6 +586,8 @@ int main(int argc, char **argv)
     std::cout << "  SPACE   - Print current settings\n\n";
     std::cout << "BUMP MAPPING CONTROLS:\n";
     std::cout << "  N/n     - Increase/decrease bump strength\n\n";
+    std::cout << "PARTICLE SYSTEM CONTROLS:\n";
+    std::cout << "  F/f     - Add/remove 10 flies\n\n";
     std::cout << "  ESC     - Exit\n";
     std::cout << "====================================\n\n";
 
