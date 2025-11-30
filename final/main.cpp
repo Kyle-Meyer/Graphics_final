@@ -1,5 +1,6 @@
 #include "filesystem_support/file_locator.hpp"
 #include "geometry/geometry.hpp"
+#include "geometry/plane.hpp"
 #include "scene/graphics.hpp"
 #include "scene/scene.hpp"
 
@@ -10,6 +11,7 @@
 #include "scene/color_node.hpp"
 #include "scene/presentation_node.hpp"
 #include "scene/light_node.hpp"
+#include "scene/unit_square.hpp"
 
 #include <chrono>
 #include <iostream>
@@ -559,11 +561,167 @@ void construct_scene()
     // Add particle system as child of sphere transform
     particle_sphere_transform->add_child(g_particle_system);
 
+    // =====================================================
+    // FLOOR: White floor plane
+    // =====================================================
+    std::cout << "Setting up floor...\n";
+
+    // Create shader for the floor (reuse bump mapping shader with bump strength 0)
+    auto floor_shader = std::make_shared<cg::BumpMappingShaderNode>();
+    if (!floor_shader->create("bump_mapping.vert", "bump_mapping.frag"))
+    {
+        std::cout << "Failed to create floor shader\n";
+        exit(-1);
+    }
+    if (!floor_shader->get_locations())
+    {
+        std::cout << "Failed to get floor shader locations\n";
+        exit(-1);
+    }
+
+    // Set global ambient for floor shader
+    floor_shader->set_global_ambient(cg::Color4(0.2f, 0.2f, 0.2f, 1.0f));
+    floor_shader->set_bump_strength(0.0f);  // No bump mapping for floor
+    floor_shader->set_normal_mapping_enabled(false);
+
+    // Create white material for the floor
+    auto floor_material = std::make_shared<cg::PresentationNode>(
+        cg::Color4(0.6f, 0.6f, 0.6f, 1.0f),   // ambient (light gray)
+        cg::Color4(1.0f, 1.0f, 1.0f, 1.0f),   // diffuse (white)
+        cg::Color4(0.2f, 0.2f, 0.2f, 1.0f),   // specular (subtle)
+        cg::Color4(0.0f, 0.0f, 0.0f, 1.0f),   // emission
+        8.0f                                   // shininess (low for matte finish)
+    );
+
+    // Get floor shader attribute locations
+    int floor_pos_loc = floor_shader->get_position_loc();
+    int floor_norm_loc = floor_shader->get_normal_loc();
+    int floor_tex_loc = floor_shader->get_texcoord_loc();
+    int floor_tan_loc = floor_shader->get_tangent_loc();
+    int floor_bitan_loc = floor_shader->get_bitangent_loc();
+
+    // Create floor geometry (large square subdivided for smoothness)
+    auto floor_surface = std::make_shared<cg::UnitSquareSurface>(
+        20,  // subdivisions
+        floor_pos_loc, floor_norm_loc, floor_tex_loc,
+        floor_tan_loc, floor_bitan_loc
+    );
+
+    // Transform for floor - scale and position it
+    auto floor_transform = std::make_shared<cg::TransformNode>();
+    floor_transform->scale(200.0f, 200.0f, 1.0f);  // Large floor
+    floor_transform->translate(-0.5f, -0.5f, 0.0f);  // Center it (UnitSquare is 0-1, we want -0.5 to 0.5 * scale)
+
+    // Build floor hierarchy
+    g_camera->add_child(floor_shader);
+    floor_shader->add_child(floor_material);
+    floor_material->add_child(floor_transform);
+    floor_transform->add_child(floor_surface);
+
+    std::cout << "White floor added!\n";
+
+    // =====================================================
+    // SHADOWS: Simple elliptical shadows below each sphere
+    // =====================================================
+    std::cout << "Setting up shadows...\n";
+
+    // Create shader for shadows
+    auto shadow_shader = std::make_shared<cg::BumpMappingShaderNode>();
+    if (!shadow_shader->create("bump_mapping.vert", "bump_mapping.frag"))
+    {
+        std::cout << "Failed to create shadow shader\n";
+        exit(-1);
+    }
+    if (!shadow_shader->get_locations())
+    {
+        std::cout << "Failed to get shadow shader locations\n";
+        exit(-1);
+    }
+
+    shadow_shader->set_global_ambient(cg::Color4(0.1f, 0.1f, 0.1f, 1.0f));
+    shadow_shader->set_bump_strength(0.0f);
+    shadow_shader->set_normal_mapping_enabled(false);
+
+    // Create dark gray material for shadows
+    auto shadow_material = std::make_shared<cg::PresentationNode>(
+        cg::Color4(0.3f, 0.3f, 0.3f, 1.0f),   // ambient (dark gray)
+        cg::Color4(0.4f, 0.4f, 0.4f, 1.0f),   // diffuse (medium gray)
+        cg::Color4(0.0f, 0.0f, 0.0f, 1.0f),   // specular (none)
+        cg::Color4(0.0f, 0.0f, 0.0f, 1.0f),   // emission
+        1.0f                                   // shininess
+    );
+
+    int shadow_pos_loc = shadow_shader->get_position_loc();
+    int shadow_norm_loc = shadow_shader->get_normal_loc();
+    int shadow_tex_loc = shadow_shader->get_texcoord_loc();
+    int shadow_tan_loc = shadow_shader->get_tangent_loc();
+    int shadow_bitan_loc = shadow_shader->get_bitangent_loc();
+
+    // Shadow 1: Under left sphere
+    {
+        auto shadow_sphere1 = std::make_shared<cg::SphereSection>(
+            -90.0f, 90.0f, 20,
+            0.0f, 360.0f, 20,
+            1.0f,
+            shadow_pos_loc, shadow_norm_loc, shadow_tex_loc,
+            shadow_tan_loc, shadow_bitan_loc
+        );
+
+        auto shadow_transform1 = std::make_shared<cg::TransformNode>();
+        shadow_transform1->translate(-30.0f, 0.0f, 0.2f);  // Slightly above floor
+        shadow_transform1->scale(14.0f, 14.0f, 0.5f);       // Flattened ellipse
+
+        g_camera->add_child(shadow_shader);
+        shadow_shader->add_child(shadow_material);
+        shadow_material->add_child(shadow_transform1);
+        shadow_transform1->add_child(shadow_sphere1);
+    }
+
+    // Shadow 2: Under center sphere
+    {
+        auto shadow_sphere2 = std::make_shared<cg::SphereSection>(
+            -90.0f, 90.0f, 20,
+            0.0f, 360.0f, 20,
+            1.0f,
+            shadow_pos_loc, shadow_norm_loc, shadow_tex_loc,
+            shadow_tan_loc, shadow_bitan_loc
+        );
+
+        auto shadow_transform2 = std::make_shared<cg::TransformNode>();
+        shadow_transform2->translate(0.0f, 0.0f, 0.2f);
+        shadow_transform2->scale(14.0f, 14.0f, 0.5f);
+
+        shadow_material->add_child(shadow_transform2);
+        shadow_transform2->add_child(shadow_sphere2);
+    }
+
+    // Shadow 3: Under right sphere
+    {
+        auto shadow_sphere3 = std::make_shared<cg::SphereSection>(
+            -90.0f, 90.0f, 20,
+            0.0f, 360.0f, 20,
+            1.0f,
+            shadow_pos_loc, shadow_norm_loc, shadow_tex_loc,
+            shadow_tan_loc, shadow_bitan_loc
+        );
+
+        auto shadow_transform3 = std::make_shared<cg::TransformNode>();
+        shadow_transform3->translate(30.0f, 0.0f, 0.2f);
+        shadow_transform3->scale(14.0f, 14.0f, 0.5f);
+
+        shadow_material->add_child(shadow_transform3);
+        shadow_transform3->add_child(shadow_sphere3);
+    }
+
+    std::cout << "Shadows added!\n";
+
     std::cout << "\n====================================\n";
-    std::cout << "Scene created with 3 spheres:\n";
+    std::cout << "Scene created with 3 spheres + floor + shadows:\n";
     std::cout << "  LEFT:   Multi-textured sphere\n";
     std::cout << "  CENTER: Red bump-mapped sphere\n";
     std::cout << "  RIGHT:  Baby blue sphere (bump strength = 0)\n";
+    std::cout << "  FLOOR:  White floor plane\n";
+    std::cout << "  SHADOWS: Cast shadows beneath each sphere\n";
     std::cout << "====================================\n\n";
 }
 
@@ -635,7 +793,7 @@ int main(int argc, char **argv)
 #endif
 
     // OpenGL setup
-    glClearColor(0.1f, 0.1f, 0.15f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);  // White background
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_DEPTH_TEST);
     glFrontFace(GL_CCW);
