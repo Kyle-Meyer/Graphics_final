@@ -851,6 +851,7 @@
 ├── lib
 │   ├── linux
 │   │   └── SDL3
+│   │       ├── libSDL3.so -> libSDL3.so.0
 │   │       ├── libSDL3.so.0 -> libSDL3.so.0.1.7
 │   │       └── libSDL3.so.0.1.7
 │   ├── macos
@@ -946,13 +947,35 @@
 │   │           │   └── SDL3
 │   │           └── Current -> A
 │   └── win
-│       └── glew
-│           └── include
-│               └── GL
-│                   ├── eglew.h
-│                   ├── glew.h
-│                   ├── glxew.h
-│                   └── wglew.h
+│       ├── glew
+│       │   ├── bin
+│       │   │   ├── x64
+│       │   │   │   └── glew32.dll
+│       │   │   └── x86
+│       │   │       └── glew32.dll
+│       │   ├── include
+│       │   │   └── GL
+│       │   │       ├── eglew.h
+│       │   │       ├── glew.h
+│       │   │       ├── glxew.h
+│       │   │       └── wglew.h
+│       │   └── lib
+│       │       ├── x64
+│       │       │   ├── glew32.lib
+│       │       │   └── glew32s.lib
+│       │       └── x86
+│       │           ├── glew32.lib
+│       │           └── glew32s.lib
+│       └── SDL3
+│           ├── arm64
+│           │   ├── SDL3.dll
+│           │   └── SDL3.lib
+│           ├── x64
+│           │   ├── SDL3.dll
+│           │   └── SDL3.lib
+│           └── x86
+│               ├── SDL3.dll
+│               └── SDL3.lib
 ├── Module10
 │   ├── lighting_shader_node.cpp
 │   ├── lighting_shader_node.hpp
@@ -1025,4 +1048,4 @@
     ├── floor_tiles.jpg
     └── grainy_wood.jpg
 
-88 directories, 937 files
+98 directories, 950 files

@@ -317,4 +317,18 @@ if("final" IN_LIST TARGET_LIST)
          DESTINATION ${CMAKE_BINARY_DIR}/)
 
     message(STATUS "Copied lighting shaders to build directories")
+
+    # Copy bump multi-texture shaders to the final subdirectory in build
+    file(COPY ${CMAKE_SOURCE_DIR}/final/bump_multi_texture.vert
+         DESTINATION ${CMAKE_BINARY_DIR}/final/)
+    file(COPY ${CMAKE_SOURCE_DIR}/final/bump_multi_texture.frag
+         DESTINATION ${CMAKE_BINARY_DIR}/final/)
+
+    # Copy bump multi-texture shaders to root build directory
+    file(COPY ${CMAKE_SOURCE_DIR}/final/bump_multi_texture.vert
+         DESTINATION ${CMAKE_BINARY_DIR}/)
+    file(COPY ${CMAKE_SOURCE_DIR}/final/bump_multi_texture.frag
+         DESTINATION ${CMAKE_BINARY_DIR}/)
+
+    message(STATUS "Copied bump multi-texture shaders to build directories")
 endif()
