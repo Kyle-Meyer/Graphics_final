@@ -389,7 +389,7 @@ void construct_scene()
 
     // Load normal map texture
     cg::ImageData normal_map;
-    load_image_data(normal_map, "bumper.jpg", false);
+    load_image_data(normal_map, "bumper2.png", false);
     if (normal_map.data)
     {
         g_combined_shader->bind_normal_map(&normal_map);

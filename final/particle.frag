@@ -1,8 +1,8 @@
 #version 330 core
 
-out vec4 fragColor;
+in vec3 frag_color;
 
-uniform vec3 particle_color;
+out vec4 fragColor;
 
 void main()
 {
@@ -11,7 +11,7 @@ void main()
     if (length(coord) > 0.5)
         discard;
 
-    fragColor = vec4(particle_color, 1.0);
+    fragColor = vec4(frag_color, 1.0);
 }
 
 

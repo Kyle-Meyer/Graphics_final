@@ -1,9 +1,13 @@
 #version 330 core
 
 // Static particle parameters (uploaded once)
-layout(location = 0) in vec3 base_position;    // Base position in swarm
-layout(location = 1) in vec3 movement_params;  // x: speed, y: noise_scale, z: orbit_phase
-layout(location = 2) in vec3 noise_offsets;    // Random offsets for noise sampling
+layout(location = 0) in vec3 orbit_center;        // Center of elliptical orbit
+layout(location = 1) in vec4 ellipse_params;      // x: semi_major_axis, y: semi_minor_axis, z: orbital_speed, w: orbit_phase
+layout(location = 2) in vec3 orbit_orientation;   // x: inclination, y: azimuth, z: unused
+layout(location = 3) in vec3 particle_color;      // Random color for this particle
+
+// Output to fragment shader
+out vec3 frag_color;
 
 // Uniforms
 uniform mat4 pvm_matrix;
@@ -11,53 +15,80 @@ uniform float point_size;
 uniform float current_time;
 uniform float min_distance;  // Minimum distance from origin (sphere surface)
 
-// Simple 3D noise function (hash-based)
-float hash(float n) {
-    return fract(sin(n) * 43758.5453123);
+// Rotation matrix around X axis
+mat3 rotateX(float angle) {
+    float c = cos(angle);
+    float s = sin(angle);
+    return mat3(
+        1.0, 0.0, 0.0,
+        0.0, c, -s,
+        0.0, s, c
+    );
 }
 
-float noise3d(vec3 x) {
-    vec3 p = floor(x);
-    vec3 f = fract(x);
-    f = f * f * (3.0 - 2.0 * f);
-    
-    float n = p.x + p.y * 57.0 + 113.0 * p.z;
-    return mix(
-        mix(mix(hash(n + 0.0), hash(n + 1.0), f.x),
-            mix(hash(n + 57.0), hash(n + 58.0), f.x), f.y),
-        mix(mix(hash(n + 113.0), hash(n + 114.0), f.x),
-            mix(hash(n + 170.0), hash(n + 171.0), f.x), f.y), f.z);
+// Rotation matrix around Y axis
+mat3 rotateY(float angle) {
+    float c = cos(angle);
+    float s = sin(angle);
+    return mat3(
+        c, 0.0, s,
+        0.0, 1.0, 0.0,
+        -s, 0.0, c
+    );
+}
+
+// Rotation matrix around Z axis
+mat3 rotateZ(float angle) {
+    float c = cos(angle);
+    float s = sin(angle);
+    return mat3(
+        c, -s, 0.0,
+        s, c, 0.0,
+        0.0, 0.0, 1.0
+    );
 }
 
 void main()
 {
-    float speed = movement_params.x;
-    float noise_scale = movement_params.y;
-    float orbit_phase = movement_params.z;
-    
-    // Create animated time for this particle
-    float t = current_time * speed + orbit_phase;
-    
-    // Sample 3D noise at different positions for x, y, z movement
-    vec3 noise_sample_pos = vec3(t, t, t) * 0.5 + noise_offsets;
-    
-    float noise_x = noise3d(noise_sample_pos + vec3(0.0, 0.0, 0.0));
-    float noise_y = noise3d(noise_sample_pos + vec3(10.5, 0.0, 0.0));
-    float noise_z = noise3d(noise_sample_pos + vec3(0.0, 10.5, 0.0));
-    
-    // Convert noise from [0,1] to [-1,1]
-    vec3 noise_offset = vec3(noise_x, noise_y, noise_z) * 2.0 - 1.0;
-    
-    // Apply noise to base position
-    vec3 position = base_position + noise_offset * noise_scale;
-    
+    // Unpack ellipse parameters
+    float semi_major = ellipse_params.x;
+    float semi_minor = ellipse_params.y;
+    float orbital_speed = ellipse_params.z;
+    float orbit_phase = ellipse_params.w;
+
+    // Unpack orbit orientation
+    float inclination = orbit_orientation.x;
+    float azimuth = orbit_orientation.y;
+
+    // Calculate current angle in orbit
+    float angle = current_time * orbital_speed + orbit_phase;
+
+    // Calculate position on ellipse in 2D (XY plane)
+    vec3 orbit_pos = vec3(
+        semi_major * cos(angle),
+        semi_minor * sin(angle),
+        0.0
+    );
+
+    // Rotate orbit plane to create 3D orientation
+    // First rotate around Z axis (azimuth)
+    orbit_pos = rotateZ(azimuth) * orbit_pos;
+    // Then rotate around X axis (inclination)
+    orbit_pos = rotateX(inclination) * orbit_pos;
+
+    // Add orbit center offset
+    vec3 position = orbit_center + orbit_pos;
+
     // SURFACE AVOIDANCE: Push particle out if it's too close to origin
     float dist = length(position);
     if (dist < min_distance) {
         // Push particle out to minimum distance along the direction from origin
         position = normalize(position) * min_distance;
     }
-    
+
     gl_Position = pvm_matrix * vec4(position, 1.0);
     gl_PointSize = point_size;
+
+    // Pass color to fragment shader
+    frag_color = particle_color;
 }

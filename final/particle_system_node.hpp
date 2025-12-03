@@ -11,20 +11,25 @@ namespace cg
 {
 
 /**
- * Particle structure for fly swarm behavior
+ * Particle structure for elliptical orbit behavior
  */
 struct Particle
 {
     // Static parameters (set once, uploaded to GPU)
-    Point3 base_position;    // Base position in swarm (xyz)
-    float speed;             // Movement speed multiplier
-    float noise_scale;       // How far from base position it can wander
-    float orbit_phase;       // Time offset for variation
-    Vector3 noise_offsets;   // Random offsets for noise function
+    Point3 orbit_center;     // Center of the elliptical orbit
+    float semi_major_axis;   // Semi-major axis length (larger radius)
+    float semi_minor_axis;   // Semi-minor axis length (smaller radius)
+    float orbital_speed;     // Rotation speed around orbit
+    float orbit_phase;       // Starting phase angle for variation
+    float inclination;       // Tilt angle of orbit plane (radians)
+    float azimuth;           // Rotation of orbit plane around vertical (radians)
+    float color_r;           // Red component
+    float color_g;           // Green component
+    float color_b;           // Blue component
 };
 
 /**
- * Particle system that creates a swarm of flies around a center point
+ * Particle system that creates particles in random elliptical orbits around a center point
  */
 class ParticleSystemNode : public ShaderNode
 {
@@ -73,6 +78,11 @@ class ParticleSystemNode : public ShaderNode
     int get_particle_count() const { return particles_.size(); }
 
     /**
+     * Get current animation time
+     */
+    float get_current_time() const { return current_time_; }
+
+    /**
      * Set the color of particles
      * @param r  Red component (0-1)
      * @param g  Green component (0-1)
@@ -115,7 +125,6 @@ class ParticleSystemNode : public ShaderNode
     GLint noise_offsets_loc_;
     GLint pvm_matrix_loc_;
     GLint point_size_loc_;
-    GLint particle_color_loc_;
     GLint current_time_loc_;
     GLint min_distance_loc_; 
 

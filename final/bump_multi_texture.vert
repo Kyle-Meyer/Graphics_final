@@ -8,11 +8,11 @@ layout(location = 3) in vec3 vtx_tangent;
 layout(location = 4) in vec3 vtx_bitangent;
 
 // Outputs to fragment shader
-out vec3 frag_position;    // World space position
-out vec3 frag_normal;      // World space normal
-out vec2 frag_texcoord;    // Texture coordinates
-out vec3 frag_tangent;     // World space tangent
-out vec3 frag_bitangent;   // World space bitangent
+out vec3 frag_position;       // World space position
+out vec3 frag_normal;         // World space normal
+out vec2 frag_texcoord;       // Texture coordinates
+out vec3 frag_tangent;        // World space tangent
+out vec3 frag_bitangent;      // World space bitangent
 
 // Transformation matrices
 uniform mat4 pvm_matrix;      // Projection * View * Model
