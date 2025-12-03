@@ -11,7 +11,7 @@ namespace cg
 {
 
 /**
- * Particle structure for elliptical orbit behavior
+ * Particle structure for elliptical orbit behavior with trail support
  */
 struct Particle
 {
@@ -26,10 +26,16 @@ struct Particle
     float color_r;           // Red component
     float color_g;           // Green component
     float color_b;           // Blue component
+    
+    // Trail time offsets (how far back in time each trail segment is)
+    float trail_offset_1;    // Usually ~0.05 seconds back
+    float trail_offset_2;    // Usually ~0.10 seconds back
+    float trail_offset_3;    // Usually ~0.15 seconds back
+    float trail_offset_4;    // Usually ~0.20 seconds back
 };
 
 /**
- * Particle system that creates particles in random elliptical orbits around a center point
+ * Particle system that creates particles in random elliptical orbits with GPU-computed trails
  */
 class ParticleSystemNode : public ShaderNode
 {
@@ -101,6 +107,18 @@ class ParticleSystemNode : public ShaderNode
      * @param distance  Minimum distance in local space units
      */
     void set_min_distance(float distance);
+    
+    /**
+     * Enable or disable particle trails
+     * @param enabled  True to show trails, false to hide
+     */
+    void set_trails_enabled(bool enabled);
+    
+    /**
+     * Set the trail length (time duration)
+     * @param length  Trail length in seconds
+     */
+    void set_trail_length(float length);
 
   protected:
     // Particle data
@@ -113,6 +131,10 @@ class ParticleSystemNode : public ShaderNode
     // Particle appearance
     float particle_color_[3];  // RGB color
     float point_size_;
+    
+    // Trail settings
+    bool trails_enabled_;
+    float trail_length_;  // Total length of trail in seconds
 
     // GPU resources
     GLuint vao_;
@@ -123,10 +145,13 @@ class ParticleSystemNode : public ShaderNode
     GLint base_position_loc_;
     GLint movement_params_loc_;
     GLint noise_offsets_loc_;
-    GLint pvm_matrix_loc_;
+    GLint trail_offsets_loc_;
+    GLint segment_type_loc_;
+    GLint model_matrix_loc_;
+    GLint projection_view_matrix_loc_;
     GLint point_size_loc_;
     GLint current_time_loc_;
-    GLint min_distance_loc_; 
+    GLint min_distance_loc_;
 
     // Time tracking
     float current_time_;
