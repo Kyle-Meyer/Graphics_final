@@ -262,13 +262,6 @@ bool handle_key_event(const SDL_Event &event)
                 }
             }
             break;
-        case SDLK_T:
-            if(g_particle_system)
-            {
-               std::cout << "setting trails...\n";
-               g_particle_system->set_trails_enabled(true);
-            }
-         break;
     }
 
     return cont_program;
@@ -481,12 +474,9 @@ void construct_scene()
     g_particle_system->set_particle_color(1.0f, 1.0f, 0.0f);  // Yellow particles
     g_particle_system->set_particle_size(8.0f);
     g_particle_system->set_min_distance(1.2f);
-    g_particle_system->set_trails_enabled(true);
-    g_particle_system->set_trail_length(15);
-    g_particle_system->set_trail_sample_rate(3);
+
     // Add particle system as child of sphere transform (so they rotate together)
     g_sphere_transform->add_child(g_particle_system);
-
 
     std::cout << "Particle system added!\n";
 
@@ -573,8 +563,6 @@ int main(int argc, char **argv)
     glFrontFace(GL_CCW);
     glCullFace(GL_BACK);
     glEnable(GL_CULL_FACE);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Construct scene
     construct_scene();
