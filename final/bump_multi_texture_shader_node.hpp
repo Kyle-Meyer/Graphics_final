@@ -4,10 +4,17 @@
 #include "scene/shader_node.hpp"
 #include "scene/image_data.hpp"
 #include "scene/color4.hpp"
-#include "final/multi_texture_shader_node.hpp"  // For BlendMode enum
 
 namespace cg
 {
+
+enum class BlendMode
+{
+    MIX,        // Linear interpolation (mix)
+    MULTIPLY,   // Multiplicative blending
+    ADD,        // Additive blending
+    SUBTRACT    // Subtractive blending
+};
 
 /**
  * Combined bump mapping and multi-texture shader node.

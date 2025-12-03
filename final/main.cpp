@@ -4,8 +4,6 @@
 #include "scene/graphics.hpp"
 #include "scene/scene.hpp"
 
-#include "final/multi_texture_shader_node.hpp"
-#include "final/bump_mapping_shader_node.hpp"
 #include "final/bump_multi_texture_shader_node.hpp"
 #include "final/particle_system_node.hpp"
 #include "scene/sphere_section.hpp"
@@ -256,14 +254,21 @@ bool handle_key_event(const SDL_Event &event)
             {
                 if (upper_case)
                 {
-                    g_particle_system->add_particles(10);
+                    g_particle_system->add_particles(1);
                 }
                 else
                 {
-                    g_particle_system->remove_particles(10);
+                    g_particle_system->remove_particles(1);
                 }
             }
             break;
+        case SDLK_T:
+            if(g_particle_system)
+            {
+               std::cout << "setting trails...\n";
+               g_particle_system->set_trails_enabled(true);
+            }
+         break;
     }
 
     return cont_program;
@@ -458,7 +463,7 @@ void construct_scene()
     g_particle_system = std::make_shared<cg::ParticleSystemNode>(
         cg::Point3(0.0f, 0.0f, 0.0f),
         2.5f,  // Orbit radius around sphere
-        100    // Number of particles
+        10    // Number of particles
     );
 
     if (!g_particle_system->create("particle.vert", "particle.frag"))
@@ -476,9 +481,12 @@ void construct_scene()
     g_particle_system->set_particle_color(1.0f, 1.0f, 0.0f);  // Yellow particles
     g_particle_system->set_particle_size(8.0f);
     g_particle_system->set_min_distance(1.2f);
-
+    g_particle_system->set_trails_enabled(true);
+    g_particle_system->set_trail_length(15);
+    g_particle_system->set_trail_sample_rate(3);
     // Add particle system as child of sphere transform (so they rotate together)
     g_sphere_transform->add_child(g_particle_system);
+
 
     std::cout << "Particle system added!\n";
 
@@ -565,6 +573,8 @@ int main(int argc, char **argv)
     glFrontFace(GL_CCW);
     glCullFace(GL_BACK);
     glEnable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Construct scene
     construct_scene();

@@ -262,33 +262,6 @@ endif()
 ##################################################################
 
 if("final" IN_LIST TARGET_LIST)
-    # Copy to the final subdirectory in build
-    file(COPY ${CMAKE_SOURCE_DIR}/final/multi_texture.vert 
-         DESTINATION ${CMAKE_BINARY_DIR}/final/)
-    file(COPY ${CMAKE_SOURCE_DIR}/final/multi_texture.frag 
-         DESTINATION ${CMAKE_BINARY_DIR}/final/)
-    
-    # Copy to root build directory
-    file(COPY ${CMAKE_SOURCE_DIR}/final/multi_texture.vert 
-         DESTINATION ${CMAKE_BINARY_DIR}/)
-    file(COPY ${CMAKE_SOURCE_DIR}/final/multi_texture.frag 
-         DESTINATION ${CMAKE_BINARY_DIR}/)
-
-    message(STATUS "Copied multi-texture shaders to build directories")
-
-    # Copy bump mapping shaders to the final subdirectory in build
-    file(COPY ${CMAKE_SOURCE_DIR}/final/bump_mapping.vert
-         DESTINATION ${CMAKE_BINARY_DIR}/final/)
-    file(COPY ${CMAKE_SOURCE_DIR}/final/bump_mapping.frag
-         DESTINATION ${CMAKE_BINARY_DIR}/final/)
-
-    # Copy bump mapping shaders to root build directory
-    file(COPY ${CMAKE_SOURCE_DIR}/final/bump_mapping.vert
-         DESTINATION ${CMAKE_BINARY_DIR}/)
-    file(COPY ${CMAKE_SOURCE_DIR}/final/bump_mapping.frag
-         DESTINATION ${CMAKE_BINARY_DIR}/)
-
-    message(STATUS "Copied bump mapping shaders to build directories")
 
     # Copy particle shaders to the final subdirectory in build
     file(COPY ${CMAKE_SOURCE_DIR}/final/particle.vert
@@ -296,39 +269,13 @@ if("final" IN_LIST TARGET_LIST)
     file(COPY ${CMAKE_SOURCE_DIR}/final/particle.frag
          DESTINATION ${CMAKE_BINARY_DIR}/final/)
 
-    # Copy particle shaders to root build directory
-    file(COPY ${CMAKE_SOURCE_DIR}/final/particle.vert
-         DESTINATION ${CMAKE_BINARY_DIR}/)
-    file(COPY ${CMAKE_SOURCE_DIR}/final/particle.frag
-         DESTINATION ${CMAKE_BINARY_DIR}/)
-
     message(STATUS "Copied particle shaders to build directories")
-
-    # Copy lighting shaders (pixel_lighting) to the final subdirectory in build
-    file(COPY ${CMAKE_SOURCE_DIR}/final/pixel_lighting.vert
-         DESTINATION ${CMAKE_BINARY_DIR}/final/)
-    file(COPY ${CMAKE_SOURCE_DIR}/final/pixel_lighting.frag
-         DESTINATION ${CMAKE_BINARY_DIR}/final/)
-
-    # Copy lighting shaders to root build directory
-    file(COPY ${CMAKE_SOURCE_DIR}/final/pixel_lighting.vert
-         DESTINATION ${CMAKE_BINARY_DIR}/)
-    file(COPY ${CMAKE_SOURCE_DIR}/final/pixel_lighting.frag
-         DESTINATION ${CMAKE_BINARY_DIR}/)
-
-    message(STATUS "Copied lighting shaders to build directories")
 
     # Copy bump multi-texture shaders to the final subdirectory in build
     file(COPY ${CMAKE_SOURCE_DIR}/final/bump_multi_texture.vert
          DESTINATION ${CMAKE_BINARY_DIR}/final/)
     file(COPY ${CMAKE_SOURCE_DIR}/final/bump_multi_texture.frag
          DESTINATION ${CMAKE_BINARY_DIR}/final/)
-
-    # Copy bump multi-texture shaders to root build directory
-    file(COPY ${CMAKE_SOURCE_DIR}/final/bump_multi_texture.vert
-         DESTINATION ${CMAKE_BINARY_DIR}/)
-    file(COPY ${CMAKE_SOURCE_DIR}/final/bump_multi_texture.frag
-         DESTINATION ${CMAKE_BINARY_DIR}/)
 
     message(STATUS "Copied bump multi-texture shaders to build directories")
 endif()

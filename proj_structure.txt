@@ -1,7 +1,7 @@
 .
 ├── build
-│   ├── bump_mapping.frag
-│   ├── bump_mapping.vert
+│   ├── bump_multi_texture.frag
+│   ├── bump_multi_texture.vert
 │   ├── CMakeCache.txt
 │   ├── CMakeFiles
 │   │   ├── 3.26.5
@@ -20,238 +20,25 @@
 │   │   │       └── tmp
 │   │   ├── cmake.check_cache
 │   │   ├── CMakeConfigureLog.yaml
-│   │   ├── CMakeDirectoryInformation.cmake
 │   │   ├── CMakeScratch
-│   │   ├── final.dir
-│   │   │   ├── build.make
-│   │   │   ├── cmake_clean.cmake
-│   │   │   ├── compiler_depend.make
-│   │   │   ├── compiler_depend.ts
-│   │   │   ├── DependInfo.cmake
-│   │   │   ├── depend.make
-│   │   │   ├── final
-│   │   │   │   ├── bump_mapping_shader_node.cpp.o
-│   │   │   │   ├── bump_mapping_shader_node.cpp.o.d
-│   │   │   │   ├── lighting_shader_node.cpp.o
-│   │   │   │   ├── lighting_shader_node.cpp.o.d
-│   │   │   │   ├── main.cpp.o
-│   │   │   │   ├── main.cpp.o.d
-│   │   │   │   ├── multi_texture_shader_node.cpp.o
-│   │   │   │   ├── multi_texture_shader_node.cpp.o.d
-│   │   │   │   ├── particle_system_node.cpp.o
-│   │   │   │   └── particle_system_node.cpp.o.d
-│   │   │   ├── flags.make
-│   │   │   ├── link.txt
-│   │   │   └── progress.make
-│   │   ├── Makefile2
-│   │   ├── Makefile.cmake
-│   │   ├── Module10.dir
-│   │   │   ├── build.make
-│   │   │   ├── cmake_clean.cmake
-│   │   │   ├── compiler_depend.make
-│   │   │   ├── compiler_depend.ts
-│   │   │   ├── DependInfo.cmake
-│   │   │   ├── depend.make
-│   │   │   ├── flags.make
-│   │   │   ├── link.txt
-│   │   │   ├── Module10
-│   │   │   │   ├── lighting_shader_node.cpp.o
-│   │   │   │   ├── lighting_shader_node.cpp.o.d
-│   │   │   │   ├── main.cpp.o
-│   │   │   │   └── main.cpp.o.d
-│   │   │   └── progress.make
-│   │   ├── Module9.dir
-│   │   │   ├── build.make
-│   │   │   ├── cmake_clean.cmake
-│   │   │   ├── compiler_depend.make
-│   │   │   ├── compiler_depend.ts
-│   │   │   ├── DependInfo.cmake
-│   │   │   ├── depend.make
-│   │   │   ├── flags.make
-│   │   │   ├── link.txt
-│   │   │   ├── Module9
-│   │   │   │   ├── lighting_shader_node.cpp.o
-│   │   │   │   ├── lighting_shader_node.cpp.o.d
-│   │   │   │   ├── main.cpp.o
-│   │   │   │   └── main.cpp.o.d
-│   │   │   └── progress.make
-│   │   ├── pkgRedirects
-│   │   ├── progress.marks
-│   │   └── TargetDirectories.txt
-│   ├── cmake_install.cmake
+│   │   └── pkgRedirects
 │   ├── filesystem_support
-│   │   ├── CMakeFiles
-│   │   │   ├── CMakeDirectoryInformation.cmake
-│   │   │   ├── filesystem_support_lib.dir
-│   │   │   │   ├── build.make
-│   │   │   │   ├── cmake_clean.cmake
-│   │   │   │   ├── cmake_clean_target.cmake
-│   │   │   │   ├── compiler_depend.make
-│   │   │   │   ├── compiler_depend.ts
-│   │   │   │   ├── DependInfo.cmake
-│   │   │   │   ├── depend.make
-│   │   │   │   ├── file_loader.cpp.o
-│   │   │   │   ├── file_loader.cpp.o.d
-│   │   │   │   ├── file_locator.cpp.o
-│   │   │   │   ├── file_locator.cpp.o.d
-│   │   │   │   ├── flags.make
-│   │   │   │   ├── link.txt
-│   │   │   │   └── progress.make
-│   │   │   └── progress.marks
-│   │   ├── cmake_install.cmake
-│   │   ├── libfilesystem_support_lib.a
-│   │   └── Makefile
+│   │   └── CMakeFiles
 │   ├── final
-│   │   ├── bump_mapping.frag
-│   │   ├── bump_mapping.vert
-│   │   ├── final
-│   │   ├── multi_texture.frag
-│   │   ├── multi_texture.vert
+│   │   ├── bump_multi_texture.frag
+│   │   ├── bump_multi_texture.vert
 │   │   ├── particle.frag
-│   │   ├── particle.vert
-│   │   ├── pixel_lighting.frag
-│   │   └── pixel_lighting.vert
+│   │   └── particle.vert
 │   ├── geometry
-│   │   ├── CMakeFiles
-│   │   │   ├── CMakeDirectoryInformation.cmake
-│   │   │   ├── geometry_lib.dir
-│   │   │   │   ├── aabb.cpp.o
-│   │   │   │   ├── aabb.cpp.o.d
-│   │   │   │   ├── bounding_sphere.cpp.o
-│   │   │   │   ├── bounding_sphere.cpp.o.d
-│   │   │   │   ├── build.make
-│   │   │   │   ├── cmake_clean.cmake
-│   │   │   │   ├── cmake_clean_target.cmake
-│   │   │   │   ├── compiler_depend.make
-│   │   │   │   ├── compiler_depend.ts
-│   │   │   │   ├── DependInfo.cmake
-│   │   │   │   ├── depend.make
-│   │   │   │   ├── flags.make
-│   │   │   │   ├── geometry.cpp.o
-│   │   │   │   ├── geometry.cpp.o.d
-│   │   │   │   ├── hpoint2.cpp.o
-│   │   │   │   ├── hpoint2.cpp.o.d
-│   │   │   │   ├── hpoint3.cpp.o
-│   │   │   │   ├── hpoint3.cpp.o.d
-│   │   │   │   ├── link.txt
-│   │   │   │   ├── matrix.cpp.o
-│   │   │   │   ├── matrix.cpp.o.d
-│   │   │   │   ├── noise.cpp.o
-│   │   │   │   ├── noise.cpp.o.d
-│   │   │   │   ├── plane.cpp.o
-│   │   │   │   ├── plane.cpp.o.d
-│   │   │   │   ├── point2.cpp.o
-│   │   │   │   ├── point2.cpp.o.d
-│   │   │   │   ├── point3.cpp.o
-│   │   │   │   ├── point3.cpp.o.d
-│   │   │   │   ├── progress.make
-│   │   │   │   ├── ray3.cpp.o
-│   │   │   │   ├── ray3.cpp.o.d
-│   │   │   │   ├── segment2.cpp.o
-│   │   │   │   ├── segment2.cpp.o.d
-│   │   │   │   ├── segment3.cpp.o
-│   │   │   │   ├── segment3.cpp.o.d
-│   │   │   │   ├── types.cpp.o
-│   │   │   │   ├── types.cpp.o.d
-│   │   │   │   ├── vector2.cpp.o
-│   │   │   │   ├── vector2.cpp.o.d
-│   │   │   │   ├── vector3.cpp.o
-│   │   │   │   └── vector3.cpp.o.d
-│   │   │   └── progress.marks
-│   │   ├── cmake_install.cmake
-│   │   ├── libgeometry_lib.a
-│   │   └── Makefile
-│   ├── Makefile
+│   │   └── CMakeFiles
 │   ├── Module10
-│   │   └── Module10
 │   ├── Module9
-│   │   └── Module9
-│   ├── multi_texture.frag
-│   ├── multi_texture.vert
 │   ├── particle.frag
 │   ├── particle.vert
-│   ├── pixel_lighting.frag
-│   ├── pixel_lighting.vert
 │   ├── scene
-│   │   ├── CMakeFiles
-│   │   │   ├── CMakeDirectoryInformation.cmake
-│   │   │   ├── progress.marks
-│   │   │   └── scene_lib.dir
-│   │   │       ├── build.make
-│   │   │       ├── camera_node.cpp.o
-│   │   │       ├── camera_node.cpp.o.d
-│   │   │       ├── cmake_clean.cmake
-│   │   │       ├── cmake_clean_target.cmake
-│   │   │       ├── color3.cpp.o
-│   │   │       ├── color3.cpp.o.d
-│   │   │       ├── color4.cpp.o
-│   │   │       ├── color4.cpp.o.d
-│   │   │       ├── color_node.cpp.o
-│   │   │       ├── color_node.cpp.o.d
-│   │   │       ├── compiler_depend.make
-│   │   │       ├── compiler_depend.ts
-│   │   │       ├── conic.cpp.o
-│   │   │       ├── conic.cpp.o.d
-│   │   │       ├── DependInfo.cmake
-│   │   │       ├── depend.make
-│   │   │       ├── flags.make
-│   │   │       ├── geometry_node.cpp.o
-│   │   │       ├── geometry_node.cpp.o.d
-│   │   │       ├── image_data.cpp.o
-│   │   │       ├── image_data.cpp.o.d
-│   │   │       ├── light_node.cpp.o
-│   │   │       ├── light_node.cpp.o.d
-│   │   │       ├── link.txt
-│   │   │       ├── mesh_teapot.cpp.o
-│   │   │       ├── mesh_teapot.cpp.o.d
-│   │   │       ├── presentation_node.cpp.o
-│   │   │       ├── presentation_node.cpp.o.d
-│   │   │       ├── progress.make
-│   │   │       ├── scene.cpp.o
-│   │   │       ├── scene.cpp.o.d
-│   │   │       ├── scene_node.cpp.o
-│   │   │       ├── scene_node.cpp.o.d
-│   │   │       ├── scene_state.cpp.o
-│   │   │       ├── scene_state.cpp.o.d
-│   │   │       ├── shader_node.cpp.o
-│   │   │       ├── shader_node.cpp.o.d
-│   │   │       ├── sphere_section.cpp.o
-│   │   │       ├── sphere_section.cpp.o.d
-│   │   │       ├── surface_of_revolution.cpp.o
-│   │   │       ├── surface_of_revolution.cpp.o.d
-│   │   │       ├── torus.cpp.o
-│   │   │       ├── torus.cpp.o.d
-│   │   │       ├── transform_node.cpp.o
-│   │   │       ├── transform_node.cpp.o.d
-│   │   │       ├── tri_surface.cpp.o
-│   │   │       ├── tri_surface.cpp.o.d
-│   │   │       ├── unit_square.cpp.o
-│   │   │       └── unit_square.cpp.o.d
-│   │   ├── cmake_install.cmake
-│   │   ├── libscene_lib.a
-│   │   └── Makefile
+│   │   └── CMakeFiles
 │   └── shader_support
-│       ├── CMakeFiles
-│       │   ├── CMakeDirectoryInformation.cmake
-│       │   ├── progress.marks
-│       │   └── shader_support_lib.dir
-│       │       ├── build.make
-│       │       ├── cmake_clean.cmake
-│       │       ├── cmake_clean_target.cmake
-│       │       ├── compiler_depend.make
-│       │       ├── compiler_depend.ts
-│       │       ├── DependInfo.cmake
-│       │       ├── depend.make
-│       │       ├── flags.make
-│       │       ├── glsl_shader.cpp.o
-│       │       ├── glsl_shader.cpp.o.d
-│       │       ├── glsl_shader_program.cpp.o
-│       │       ├── glsl_shader_program.cpp.o.d
-│       │       ├── link.txt
-│       │       └── progress.make
-│       ├── cmake_install.cmake
-│       ├── libshader_support_lib.a
-│       └── Makefile
+│       └── CMakeFiles
 ├── build_win
 │   ├── filesystem_support
 │   │   ├── filesystem_support_lib.sln
@@ -287,23 +74,15 @@
 │   ├── file_locator.hpp
 │   └── preprocessor.hpp
 ├── final
-│   ├── bump_mapping.frag
-│   ├── bump_mapping_shader_node.cpp
-│   ├── bump_mapping_shader_node.hpp
-│   ├── bump_mapping.vert
-│   ├── lighting_shader_node.cpp
-│   ├── lighting_shader_node.hpp
+│   ├── bump_multi_texture.frag
+│   ├── bump_multi_texture_shader_node.cpp
+│   ├── bump_multi_texture_shader_node.hpp
+│   ├── bump_multi_texture.vert
 │   ├── main.cpp
-│   ├── multi_texture.frag
-│   ├── multi_texture_shader_node.cpp
-│   ├── multi_texture_shader_node.hpp
-│   ├── multi_texture.vert
 │   ├── particle.frag
 │   ├── particle_system_node.cpp
 │   ├── particle_system_node.hpp
-│   ├── particle.vert
-│   ├── pixel_lighting.frag
-│   └── pixel_lighting.vert
+│   └── particle.vert
 ├── geometry
 │   ├── aabb.cpp
 │   ├── aabb.hpp
@@ -851,7 +630,6 @@
 ├── lib
 │   ├── linux
 │   │   └── SDL3
-│   │       ├── libSDL3.so -> libSDL3.so.0
 │   │       ├── libSDL3.so.0 -> libSDL3.so.0.1.7
 │   │       └── libSDL3.so.0.1.7
 │   ├── macos
@@ -947,35 +725,13 @@
 │   │           │   └── SDL3
 │   │           └── Current -> A
 │   └── win
-│       ├── glew
-│       │   ├── bin
-│       │   │   ├── x64
-│       │   │   │   └── glew32.dll
-│       │   │   └── x86
-│       │   │       └── glew32.dll
-│       │   ├── include
-│       │   │   └── GL
-│       │   │       ├── eglew.h
-│       │   │       ├── glew.h
-│       │   │       ├── glxew.h
-│       │   │       └── wglew.h
-│       │   └── lib
-│       │       ├── x64
-│       │       │   ├── glew32.lib
-│       │       │   └── glew32s.lib
-│       │       └── x86
-│       │           ├── glew32.lib
-│       │           └── glew32s.lib
-│       └── SDL3
-│           ├── arm64
-│           │   ├── SDL3.dll
-│           │   └── SDL3.lib
-│           ├── x64
-│           │   ├── SDL3.dll
-│           │   └── SDL3.lib
-│           └── x86
-│               ├── SDL3.dll
-│               └── SDL3.lib
+│       └── glew
+│           └── include
+│               └── GL
+│                   ├── eglew.h
+│                   ├── glew.h
+│                   ├── glxew.h
+│                   └── wglew.h
 ├── Module10
 │   ├── lighting_shader_node.cpp
 │   ├── lighting_shader_node.hpp
@@ -1040,7 +796,10 @@
 │   ├── glsl_shader_program.cpp
 │   └── glsl_shader_program.hpp
 └── textures
+    ├── bumper2.png
     ├── bumper.jpg
+    ├── cloud2.png
+    ├── cloud.png
     ├── cokecan.jpg
     ├── cokecan.png
     ├── dogs_poker.jpg
@@ -1048,4 +807,4 @@
     ├── floor_tiles.jpg
     └── grainy_wood.jpg
 
-98 directories, 950 files
+78 directories, 729 files
