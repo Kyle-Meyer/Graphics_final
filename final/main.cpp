@@ -47,7 +47,7 @@ std::shared_ptr<cg::CameraNode> g_camera;
 std::shared_ptr<cg::BumpMultiTextureShaderNode> g_combined_shader;
 std::shared_ptr<cg::ParticleSystemNode> g_particle_system;
 std::shared_ptr<cg::TransformNode> g_sphere_transform;  // Keep reference for rotation
-
+std::shared_ptr<cg::TransformNode> g_particle_transform;
 cg::SceneState g_scene_state;
 
 // Rotation animation
@@ -87,10 +87,19 @@ void update_sphere_rotation()
     if (g_sphere_transform) {
         g_sphere_transform->load_identity();
         g_sphere_transform->translate(0.0f, 0.0f, 0.0f);
-        g_sphere_transform->rotate_z(g_sphere_rotation);  // Rotate around Z axis
+        g_sphere_transform->rotate_z(g_sphere_rotation);
         g_sphere_transform->scale(20.0f, 20.0f, 20.0f);
     }
+    
+    // Update particle transform to match sphere
+    if (g_particle_transform) {
+        g_particle_transform->load_identity();
+        g_particle_transform->translate(0.0f, 0.0f, 0.0f);
+        g_particle_transform->rotate_z(g_sphere_rotation);  // Same rotation as sphere
+        g_particle_transform->scale(20.0f, 20.0f, 20.0f);    // Same scale as sphere
+    }
 }
+
 
 void display()
 {
@@ -450,15 +459,16 @@ void construct_scene()
     // =====================================================
     // PARTICLE SYSTEM
     // =====================================================
+   
     std::cout << "Setting up particle system...\n";
-
-    // Create particle system in local space around the sphere
+    
+    // Create particle system in local space
     g_particle_system = std::make_shared<cg::ParticleSystemNode>(
-        cg::Point3(0.0f, 0.0f, 0.0f),
-        2.5f,  // Orbit radius around sphere
-        10    // Number of particles
+        cg::Point3(0.0f, 0.0f, 0.0f),  // Origin in local space
+        1.0f,                           // Sphere radius in local space (before 20x scale)
+        50                              // Number of particles
     );
-
+    
     if (!g_particle_system->create("particle.vert", "particle.frag"))
     {
         std::cout << "Failed to create particle system shader\n";
@@ -469,17 +479,26 @@ void construct_scene()
         std::cout << "Failed to get particle shader locations\n";
         exit(-1);
     }
-
+    
     // Set particle appearance
-    g_particle_system->set_particle_color(1.0f, 1.0f, 0.0f);  // Yellow particles
-    g_particle_system->set_particle_size(8.0f);
-    g_particle_system->set_min_distance(1.2f);
-
-    // Add particle system as child of sphere transform (so they rotate together)
-    g_sphere_transform->add_child(g_particle_system);
-
+    g_particle_system->set_particle_size(0.9f);
+    g_particle_system->set_sphere_radius(1.0f);
+    g_particle_system->set_trails_enabled(true);
+    g_particle_system->set_trail_length(0.3f);
+    
+    // Create a transform for the particle system that will match the sphere
+    g_particle_transform = std::make_shared<cg::TransformNode>();
+    g_particle_transform->translate(0.0f, 0.0f, 0.0f);
+    g_particle_transform->scale(20.0f, 20.0f, 20.0f);
+    
+    // Build hierarchy: particle transform -> particle system
+    g_particle_transform->add_child(g_particle_system);
+    
+    // Add particle transform as sibling to sphere shader (both under camera)
+    g_camera->add_child(g_particle_transform);
+    
     std::cout << "Particle system added!\n";
-
+    
     std::cout << "\n====================================\n";
     std::cout << "Scene created:\n";
     std::cout << "  - Single sphere with combined bump + multi-texture shader\n";

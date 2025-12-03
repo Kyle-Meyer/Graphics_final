@@ -20,3 +20,5 @@ void main()
         fragColor = vec4(frag_color, trail_fade);
     }
 }
+
+

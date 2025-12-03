@@ -11,18 +11,23 @@ namespace cg
 {
 
 /**
- * Particle structure for elliptical orbit behavior with trail support
+ * Particle structure for Keplerian elliptical orbit behavior with trail support
  */
 struct Particle
 {
-    // Static parameters (set once, uploaded to GPU)
-    Point3 orbit_center;     // Center of the elliptical orbit
-    float semi_major_axis;   // Semi-major axis length (larger radius)
-    float semi_minor_axis;   // Semi-minor axis length (smaller radius)
-    float orbital_speed;     // Rotation speed around orbit
-    float orbit_phase;       // Starting phase angle for variation
-    float inclination;       // Tilt angle of orbit plane (radians)
-    float azimuth;           // Rotation of orbit plane around vertical (radians)
+    // Orbital elements
+    Point3 orbit_center;     // Focus of the ellipse (center of sphere being orbited)
+    float semi_major_axis;   // Semi-major axis length (a)
+    float semi_minor_axis;   // Semi-minor axis length (b)
+    float mean_motion;       // Mean angular velocity (n = 2π/period)
+    float mean_anomaly_0;    // Initial mean anomaly (phase offset)
+    
+    // Orbital orientation (Euler angles)
+    float inclination;       // Tilt of orbit plane (i) - rotation about X
+    float azimuth;           // Longitude of ascending node (Ω) - rotation about Z
+    float arg_periapsis;     // Argument of periapsis (ω) - rotation about Z in orbital plane
+    
+    // Visual properties
     float color_r;           // Red component
     float color_g;           // Green component
     float color_b;           // Blue component
@@ -35,19 +40,19 @@ struct Particle
 };
 
 /**
- * Particle system that creates particles in random elliptical orbits with GPU-computed trails
+ * Particle system that creates particles in proper Keplerian elliptical orbits with GPU-computed trails
  */
 class ParticleSystemNode : public ShaderNode
 {
   public:
     /**
      * Constructor.
-     * @param center         Center point of the swarm (not used in local space)
-     * @param swarm_radius   Radius of the swarm area
+     * @param center         Center point of the sphere being orbited (typically origin)
+     * @param sphere_radius  Radius of the sphere (periapsis will be outside this)
      * @param initial_count  Initial number of particles
      */
     ParticleSystemNode(const Point3& center = Point3(0.0f, 0.0f, 0.0f),
-                       float swarm_radius = 15.0f,
+                       float sphere_radius = 1.0f,
                        int initial_count = 50);
 
     /**
@@ -67,13 +72,13 @@ class ParticleSystemNode : public ShaderNode
     void draw(SceneState &scene_state) override;
 
     /**
-     * Add more particles to the swarm
+     * Add more particles to the system
      * @param count  Number of particles to add
      */
     void add_particles(int count);
 
     /**
-     * Remove particles from the swarm
+     * Remove particles from the system
      * @param count  Number of particles to remove
      */
     void remove_particles(int count);
@@ -89,24 +94,16 @@ class ParticleSystemNode : public ShaderNode
     float get_current_time() const { return current_time_; }
 
     /**
-     * Set the color of particles
-     * @param r  Red component (0-1)
-     * @param g  Green component (0-1)
-     * @param b  Blue component (0-1)
-     */
-    void set_particle_color(float r, float g, float b);
-
-    /**
      * Set the size of particles
      * @param size  Point size in pixels
      */
     void set_particle_size(float size);
 
     /**
-     * Set minimum distance from center (prevents clipping through sphere)
-     * @param distance  Minimum distance in local space units
+     * Set the radius of the central sphere being orbited
+     * @param radius  Sphere radius (orbits will be outside this)
      */
-    void set_min_distance(float distance);
+    void set_sphere_radius(float radius);
     
     /**
      * Enable or disable particle trails
@@ -123,23 +120,19 @@ class ParticleSystemNode : public ShaderNode
   protected:
     // Particle data
     std::vector<Particle> particles_;
-    float swarm_radius_;
-
-    // Constraint parameters
-    float min_distance_;  // Minimum distance from center (sphere surface + buffer)
+    float sphere_radius_;    // Radius of central sphere
     
     // Particle appearance
-    float particle_color_[3];  // RGB color
     float point_size_;
     
     // Trail settings
     bool trails_enabled_;
-    float trail_length_;  // Total length of trail in seconds
+    float trail_length_;     // Total length of trail in seconds
 
     // GPU resources
     GLuint vao_;
     GLuint vbo_;
-    size_t vbo_capacity_;  // Current VBO capacity
+    size_t vbo_capacity_;    // Current VBO capacity
 
     // Uniform and attribute locations
     GLint base_position_loc_;
@@ -160,7 +153,7 @@ class ParticleSystemNode : public ShaderNode
     std::mt19937 rng_;
 
     /**
-     * Initialize a single particle
+     * Initialize a single particle with Keplerian orbital elements
      */
     void init_particle(Particle& p);
 
