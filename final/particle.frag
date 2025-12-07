@@ -1,4 +1,4 @@
-#version 330 core
+#version 410 core
 
 in vec3 frag_color;
 flat in int is_particle;

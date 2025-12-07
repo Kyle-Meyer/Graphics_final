@@ -1,4 +1,4 @@
-#version 330 core
+#version 410 core
 
 // Particle data (for both particle heads and trail segments)
 layout(location = 0) in vec3 orbit_center;        // Focus point (center of sphere)

@@ -127,9 +127,7 @@ endif()
 #   set(TARGET_LIST "Module2")                             #
 #   list(APPEND TARGET_LIST "Module3")                     #
 ############################################################
-set(TARGET_LIST "Module9")
-list(APPEND TARGET_LIST "Module10")
-list(APPEND TARGET_LIST "final")
+set(TARGET_LIST "final")
 
 #############################################
 # Add paths to be searched for header files #
